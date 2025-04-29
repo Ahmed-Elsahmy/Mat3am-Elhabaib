@@ -16,7 +16,6 @@ namespace Mat3am_Elhabaib.Models
         public string  Imageurl { get; set; }
         [Required(ErrorMessage ="Please add a price for an item")]
         public decimal Price { get; set; }
-        public bool Isavailable { get; set; }
         public int CategoryId { get; set; }
         [ForeignKey(nameof(CategoryId))]
         public Category category { get; set; }

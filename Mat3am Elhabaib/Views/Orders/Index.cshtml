@@ -1,0 +1,82 @@
+﻿@model List<Order>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-2">
+        <p>
+            <h4 style="color:white">List of all your orders</h4>
+        </p>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Paymet Method</th>
+                    <th>Items</th>
+                    <th>Total</th>
+                    <th>Delete</th>
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                        <th>User</th>
+                    }
+                       @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                        <th>Phone Number</th>
+                    }
+                           @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                        <th>Location</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model)
+                {
+                    <tr>
+                        <td>Cash on delivery</td>
+                        <td class="align-middle">
+                            <ul style="list-style-type:none">
+                                @foreach (var item in order.OrderItems)
+                                {
+                                    <li>
+                                        <div class="alert alert-info" role="alert">
+                                            <span class="badge bg-success">@item.Quantity</span> @item.UnitPrice - @item.items.Name]
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        </td>
+                        <td class="align-middle">
+                            @order.OrderItems.Select(m => m.items.Price * m.Quantity).Sum()
+                        </td>
+                        <td>
+                            <form asp-action="DeleteOrder" method="post" asp-route-id="@order.Id">
+                                <button type="submit" class="btn btn-danger" style="border:1px solid white;border-radius:30px;"><i class="bi bi-trash"></i></button>
+                            </form>
+                        </td>
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                        {
+                            <td class="align-middle"> @order.user. </td>
+                        }
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                        {
+                            <td class="align-middle"> @order.user.PhoneNumber </td>
+                        }
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                        {
+                            <td class="align-middle"> @order.user.Location </td>
+                        }
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>
+<style>
+    .table{
+        color:white;
+    }
+</style>

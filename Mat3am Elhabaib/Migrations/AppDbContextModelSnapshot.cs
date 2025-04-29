@@ -39,48 +39,6 @@ namespace Mat3am_Elhabaib.Migrations
                     b.ToTable("categories");
                 });
 
-            modelBuilder.Entity("Mat3am_Elhabaib.Models.Invoice", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("InvoiceDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool?>("IsPaid")
-                        .HasColumnType("bit");
-
-                    b.Property<double?>("NetPrice")
-                        .HasColumnType("float");
-
-                    b.Property<int?>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("PaymentDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("PaymentMethod")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double?>("TotallPrice")
-                        .HasColumnType("float");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("invoices");
-                });
-
             modelBuilder.Entity("Mat3am_Elhabaib.Models.Items", b =>
                 {
                     b.Property<int>("Id")
@@ -99,9 +57,6 @@ namespace Mat3am_Elhabaib.Migrations
                     b.Property<string>("Imageurl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Isavailable")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -156,11 +111,11 @@ namespace Mat3am_Elhabaib.Migrations
                     b.Property<int?>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<double?>("TotalPrice")
-                        .HasColumnType("float");
+                    b.Property<decimal?>("TotalPrice")
+                        .HasColumnType("decimal(18,2)");
 
-                    b.Property<double?>("UnitPrice")
-                        .HasColumnType("float");
+                    b.Property<decimal?>("UnitPrice")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
@@ -181,6 +136,9 @@ namespace Mat3am_Elhabaib.Migrations
 
                     b.Property<int>("NumberOftables")
                         .HasColumnType("int");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserID")
                         .IsRequired()
@@ -221,6 +179,31 @@ namespace Mat3am_Elhabaib.Migrations
                     b.ToTable("reviews");
                 });
 
+            modelBuilder.Entity("Mat3am_Elhabaib.Models.ShoppingCart", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ShoppingCartId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ShoppingCartItemsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ShoppingCartItemsId");
+
+                    b.ToTable("shoppingCarts");
+                });
+
             modelBuilder.Entity("Mat3am_Elhabaib.Models.User", b =>
                 {
                     b.Property<string>("Id")
@@ -241,7 +224,6 @@ namespace Mat3am_Elhabaib.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FullName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Location")
@@ -428,23 +410,6 @@ namespace Mat3am_Elhabaib.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Mat3am_Elhabaib.Models.Invoice", b =>
-                {
-                    b.HasOne("Mat3am_Elhabaib.Models.Order", "order")
-                        .WithMany()
-                        .HasForeignKey("OrderId");
-
-                    b.HasOne("Mat3am_Elhabaib.Models.User", "user")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("order");
-
-                    b.Navigation("user");
-                });
-
             modelBuilder.Entity("Mat3am_Elhabaib.Models.Items", b =>
                 {
                     b.HasOne("Mat3am_Elhabaib.Models.Category", "category")
@@ -506,6 +471,17 @@ namespace Mat3am_Elhabaib.Migrations
                         .IsRequired();
 
                     b.Navigation("user");
+                });
+
+            modelBuilder.Entity("Mat3am_Elhabaib.Models.ShoppingCart", b =>
+                {
+                    b.HasOne("Mat3am_Elhabaib.Models.Items", "ShoppingCartItems")
+                        .WithMany()
+                        .HasForeignKey("ShoppingCartItemsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ShoppingCartItems");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

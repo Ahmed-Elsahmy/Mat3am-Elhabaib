@@ -1,0 +1,77 @@
+﻿@model Mat3am_Elhabaib.Models.Items
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1></h1>
+
+
+
+<section id="book-a-table" class="book-a-table section">
+
+    <!-- Section Title -->
+    <div class="container section-title" data-aos="fade-up">
+        <h2>Create New Item </h2>
+        @*                 <p>Book a Table</p>
+        *@
+    </div><!-- End Section Title -->
+
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <form asp-action="Create" asp-controller="Items">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="row gy-4">
+                <div class="col-lg-4 col-md-6">
+                    <label asp-for="Name" class="control-label"> Item Name :  </label>
+                    <input type="text" asp-for="Name" class="form-control" placeholder="Category Name..." >
+                    <span asp-validation-for="Name" class="text-bg-danger"></span>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <label asp-for="Description" class="control-label"> Item Description :  </label>
+                    <textarea asp-for="Description" class="form-control" placeholder="Description..." ></textarea>
+                    <span asp-validation-for="Description" class="text-bg-danger"></span>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <label asp-for="Imageurl" class="control-label"> Image :  </label>
+                    <input asp-for="Imageurl" class="form-control" placeholder="Image..." >
+                    <span asp-validation-for="Imageurl" class="text-bg-danger"></span>
+                </div>
+               
+                <div class="col-lg-4 col-md-6">
+                    <label asp-for="Price" class="control-label"> Price $ :  </label>
+                    <input asp-for="Price" class="form-control" placeholder="Price $..." >
+                    <span asp-validation-for="Price" class="text-bg-danger"></span>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <label asp-for="CategoryId" class="control-label">Category</label>
+                    <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.Category"></select>
+                    <span asp-validation-for="CategoryId" class="text-danger"></span>
+                </div>
+
+            </div>
+
+
+            <div class="text-center mt-3">
+                <input class="btn-book-a-table d-none d-xl-block" type="submit" value="Create" />
+
+            </div>
+        </form><!-- End Reservation Form -->
+
+    </div>
+
+</section>
+@section Scripts {
+    <script>
+
+        $(document).ready(function () {
+            var output = document.getElementById('ProfilePicturePreview');
+            output.src = $("#Imageurl").val();
+        })
+
+        $("#Imageurl").on("change", function () {
+            var output = document.getElementById('ProfilePicturePreview');
+            output.src = $(this).val();
+        })
+    </script>
+}

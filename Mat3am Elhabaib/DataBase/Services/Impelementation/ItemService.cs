@@ -19,14 +19,12 @@ namespace Mat3am_Elhabaib.DataBase.Services.Impelementation
         {
             var Newitem = new Items()
             {
-                Id = item.Id,
                 Name = item.Name,
                 Imageurl
                 = item.Imageurl,
                 CategoryId = item.CategoryId,
                 Description = item.Description,
                 Price = item.Price,
-                Isavailable = item.Isavailable,
             };
             await _context.items.AddAsync(Newitem);
             await _context.SaveChangesAsync();
@@ -38,6 +36,14 @@ namespace Mat3am_Elhabaib.DataBase.Services.Impelementation
             return data;
         }
 
+        public async Task<IEnumerable<Items>> GetItemsByCategoryIdAsync(int categoryId)
+        {
+            return await _context.items
+                .Where(i => i.CategoryId == categoryId)
+                .ToListAsync();
+        }
+
+
         public async Task<NewItemDropDown> NewItemDropDownAsync()
         {
             var DropDown = new NewItemDropDown()
@@ -47,7 +53,7 @@ namespace Mat3am_Elhabaib.DataBase.Services.Impelementation
             return DropDown;
         }
 
-        public async Task UpdateItemAsync(Items item)
+        public async Task UpdateItemAsync(EditItemVm item)
         {
             var data = await _context.items.FirstOrDefaultAsync(i =>i.Id == item.Id);
             if (data != null) { 
@@ -56,10 +62,8 @@ namespace Mat3am_Elhabaib.DataBase.Services.Impelementation
                 data.CategoryId = item.CategoryId;
                 data.Description = item.Description;
                 data.Price = item.Price;
-                data.Isavailable = item.Isavailable;
                 await _context.SaveChangesAsync();
             }
-            await _context.SaveChangesAsync();
         }
     }
 }

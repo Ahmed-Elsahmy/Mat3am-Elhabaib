@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 
 namespace Mat3am_Elhabaib.Controllers
 {
@@ -26,10 +27,9 @@ namespace Mat3am_Elhabaib.Controllers
             var data = await AppDbContext.users.ToListAsync();
             return View(data);
         }
-        [HttpGet]
         public IActionResult Register()
         {
-            return View();
+            return View(new RegesterVM());
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -46,22 +46,22 @@ namespace Mat3am_Elhabaib.Controllers
 
             var newUser = new User()
             {
-                FullName = regesterVM.UserName,
+                UserName = regesterVM.UserName,
                 Email = regesterVM.Email,
                 PhoneNumber = regesterVM.PhoneNumber,
-                Location = regesterVM.Address,
+                Location = regesterVM.Location,
             };
             var newUserResponse = await userManager.CreateAsync(newUser, regesterVM.Password);
 
             if (newUserResponse.Succeeded)
                 await userManager.AddToRoleAsync(newUser, UserRoles.User);
 
-            return RedirectToAction("Index", "Items");
+            return RedirectToAction("Index", "Home");
         }
         [HttpGet]
         public IActionResult Login()
         {
-            return View();
+            return View(new LoginVM());
         }
         [HttpPost]
         public async Task<IActionResult> Login(LoginVM loginVM)
@@ -78,7 +78,7 @@ namespace Mat3am_Elhabaib.Controllers
                     if (result.Succeeded)
                     {
                         await signInManager.SignInAsync(user, loginVM.RememberMe);
-                        return RedirectToAction("Index", "Items");
+                        return RedirectToAction("Index", "Home");
                     }
                 }
                 TempData["Error"] = "Wrong credentials. Please, try again!";
@@ -92,7 +92,7 @@ namespace Mat3am_Elhabaib.Controllers
         public async Task<IActionResult> Logout()
         {
             await signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Items");
+            return RedirectToAction("Login" , "User");
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -105,7 +105,7 @@ namespace Mat3am_Elhabaib.Controllers
                 {
                     UserName = regesterVM.UserName,
                     Email = regesterVM.Email,
-                    Location = regesterVM.Address,
+                    Location = regesterVM.Location,
                     PhoneNumber = regesterVM.PhoneNumber,
 
 
@@ -117,12 +117,11 @@ namespace Mat3am_Elhabaib.Controllers
                     {
                         UserName = regesterVM.UserName,
                         Email = regesterVM.Email,
-
-                        Address = regesterVM.Address,
+                        Location = regesterVM.Location,
                         PhoneNumber = regesterVM.PhoneNumber
                     };
 
-                    await userManager.AddToRoleAsync(userModel, "Admin");
+                    await userManager.AddToRoleAsync(userModel, UserRoles.Admin);
                     await signInManager.SignInAsync(userModel, false);
                     return RedirectToAction("Index", "Items");
 

@@ -1,0 +1,76 @@
+﻿@model IEnumerable<Reservations>
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<div class="row">
+    <div class="col-md-8 offset-2">
+        <p>
+            <h4 style="color:white">Reviews</h4>
+            <div class="text-white" style="">
+                <a asp-controller="Reservation" asp-action="Create" class="btn btn-success" style="border:1px solid white;border-radius:30px;"><i class="bi bi-plus-circle"></i> Add New </a>
+            </div>
+        </p>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Number of Tables</th>
+                    <th>Time And Date</th>
+                   <th>Phone Number</th>
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                        <th>User</th>
+                    }
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("User"))
+                    {
+                        <th>Edit</th>
+                    }
+             
+                    <th>Delete</th>
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("User")||User.IsInRole("Admin"))
+                    {
+                        <th>Delete</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.NumberOftables</td>
+                        <td class="align-middle">
+                            @item.time
+                        </td>
+                        <td class="align-middle">
+                            @item.user.PhoneNumber
+                        </td>
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                        {
+                            <td class="align-middle"> @item.user.UserName </td>
+                        }
+                        <td>
+                            <form asp-action="Edit" method="get" asp-route-id="@item.Id">
+                                <button type="submit" class="btn btn-danger" style="border:1px solid white;border-radius:30px;"><i class="bi bi-pencil-square"></i></button>
+                            </form>
+                        </td>
+                        <td>
+                            <form asp-action="Delete" method="post" asp-route-id="@item.Id">
+                                <button type="submit" class="btn btn-danger" style="border:1px solid white;border-radius:30px;"><i class="bi bi-trash"></i></button>
+                            </form>
+                        </td>
+
+                     
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>
+<style>
+    .table{
+        background-color:burlywood;
+    }
+</style>

@@ -42,7 +42,9 @@ namespace Mat3am_Elhabaib.DataBase
                         FullName = "Admin User",
                         UserName = "admin-user",
                         Email = adminUserEmail,
-                        EmailConfirmed = true
+                        EmailConfirmed = true,
+                        PhoneNumber = "01004542726",
+                        Location = "Dammita"
                     };
                     await userManager.CreateAsync(newAdminUser, "Medo@1234?");
                     await userManager.AddToRoleAsync(newAdminUser, UserRoles.Admin);
@@ -59,7 +61,9 @@ namespace Mat3am_Elhabaib.DataBase
                         FullName = "Application User",
                         UserName = "app-user",
                         Email = appUserEmail,
-                        EmailConfirmed = true
+                        EmailConfirmed = true,
+                        PhoneNumber = "01004542726",
+                        Location = "Dammita"
                     };
                     await userManager.CreateAsync(newAppUser, "Medo@1234?");
                     await userManager.AddToRoleAsync(newAppUser, UserRoles.User);

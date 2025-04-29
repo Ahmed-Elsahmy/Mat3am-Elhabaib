@@ -1,0 +1,19 @@
+﻿@model IEnumerable<Items>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100 shadow-sm">
+                <img src="@item.Imageurl" class="card-img-top" alt="@item.Name" style="height: 200px; object-fit: cover;">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title text-center">@item.Name</h5>
+                    <p class="card-text text-muted">@item.Description</p>
+                    <div class="mt-auto">
+                        <p class="card-text text-primary fw-bold text-center">@item.Price EGP</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

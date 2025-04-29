@@ -10,7 +10,9 @@ namespace Mat3am_Elhabaib.DataBase.Services.Interface
 
         Task CreateItemAsync(Items item);
 
-        Task UpdateItemAsync(Items item);
+        Task UpdateItemAsync(EditItemVm item);
         Task<NewItemDropDown> NewItemDropDownAsync();
+        Task<IEnumerable<Items>> GetItemsByCategoryIdAsync(int categoryId);
+
     }
 }

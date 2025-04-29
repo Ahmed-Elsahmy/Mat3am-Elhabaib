@@ -1,0 +1,39 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<User> UserManager;
+
+@if (!User.Identity.IsAuthenticated)
+{
+    <div class="d-flex align-items-center">
+        <a class="btn btn-outline-light me-2" asp-controller="User" asp-action="Login" style="border:1px solid white;border-radius:30px;">
+            <i class="bi bi-box-arrow-in-right"></i> Log in
+        </a>
+
+        <a class="btn btn-outline-light" asp-controller="User" asp-action="Register" style="border:1px solid white;border-radius:30px;">
+            <i class="bi bi-person-plus"></i> Register
+        </a>
+    </div>
+}
+else
+{
+
+    @*User profile section*@
+    <div class="d-flex align-items-center">
+        <a class="btn btn-outline-light me-2" id="profile-btn" aria-expanded="false" style="border:1px solid white;border-radius:30px;">
+            <i class="bi bi-person-fill"></i> Hello @UserManager.GetUserName(User)
+        </a>
+
+        <form asp-controller="User" asp-action="Logout" class="mb-0">
+            <button class="btn btn-outline-light" style="border:1px solid white;border-radius:30px;">
+                <i class="bi bi-box-arrow-in-right"></i> Log out
+            </button>
+        </form>
+    </div>
+
+    @if (User.IsInRole("Admin"))
+    {
+        <a class="nav-link text-white" asp-controller="User" asp-action="Users">
+            <i class="bi bi-people"></i> Users
+        </a>
+    }
+}
+

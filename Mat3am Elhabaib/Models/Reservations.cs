@@ -11,6 +11,8 @@ namespace Mat3am_Elhabaib.Models
         public int NumberOftables { get; set; }
         [DataType(DataType.DateTime)]
         public DateTime time { get; set; }
+
+        public string? PhoneNumber { get; set; }
         public string UserID { get; set; }
         [ForeignKey(nameof(UserID))]
         public User user { get; set; }

@@ -1,0 +1,61 @@
+﻿@model Reservations
+@{
+    ViewData["Title"] = "Create";
+}
+
+
+<section id="book-a-table" class="book-a-table section">
+
+    <!-- Section Title -->
+    <div class="container section-title" data-aos="fade-up">
+        <h2>Review Us.. </h2>
+        @*                 <p>Book a Table</p>
+        *@
+    </div><!-- End Section Title -->
+
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <form asp-action="Create" asp-controller="Reservation">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="row gy-4">
+                <div class="col-lg-4 col-md-6">
+                    <label asp-for="@Model.NumberOftables" class="control-label "> Number Of Tables</label>
+                    <select asp-for="@Model.NumberOftables" class="form-control" style="color: #674636; background-color: #F7EFE5;">
+                        <option value="" disabled selected>Select Number Of Tabels</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+
+                    </select>
+                    <span asp-validation-for="@Model.NumberOftables" class="text-bg-danger"></span>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <label asp-for="@Model.time" class="control-label"> Time And Date :  </label>
+                    <input asp-for="@Model.time" type="datetime-local" class="form-control" />
+                    <span asp-validation-for="@Model.time" class="text-bg-danger"></span>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <label asp-for="@Model.PhoneNumber" class="control-label"> Phone Number  :  </label>
+                    <input asp-for="@Model.PhoneNumber" class="form-control"placeholder="Please Your Phone Number .." />
+                    <span asp-validation-for="@Model.PhoneNumber" class="text-bg-danger"></span>
+                </div>
+            </div>
+
+
+            <div class="text-center mt-3">
+                <input class="btn-book-a-table d-none d-xl-block" type="submit" value="Create" />
+
+            </div>
+        </form><!-- End Reservation Form -->
+
+    </div>
+
+</section>

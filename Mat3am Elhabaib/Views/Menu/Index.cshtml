@@ -1,0 +1,53 @@
+﻿@model IEnumerable<Items>
+@{
+    var categories = ViewBag.Categories as List<Category>;
+}
+
+<div class="container my-5">
+    <h2 class="text-center mb-4">📋 Our Menu</h2>
+
+    <!-- Categories as Filter Buttons -->
+    <div class="d-flex flex-wrap justify-content-center mb-5">
+     
+    </div>
+
+    <div class="row" data-aos="fade-up" data-aos-delay="100">
+        <div class="col-lg-12 d-flex justify-content-center">
+            <ul class="menu-filters isotope-filters">
+                <li>
+                    <button class="btn btn-primary m-2" onclick="loadItems(0)">All</button>
+                </li>
+
+                @foreach (var cat in categories)
+                {
+                   <li>
+                        <button class="btn btn-outline-primary m-2" onclick="loadItems(@(cat.Id))">
+                            @cat.Name
+                        </button>
+                   </li> 
+                }
+            </ul>
+        </div>
+    </div>
+
+    <!-- Items Display Area -->
+    <div id="itemsContainer">
+        @await Html.PartialAsync("_ItemsPartial", Model)
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function loadItems(categoryId) {
+            let url = categoryId === 0
+                ? '@Url.Action("Index", "Menu")'
+                : '@Url.Action("FilterItems", "Menu")' + '?categoryId=' + categoryId;
+
+            fetch(url)
+                .then(res => res.text())
+                .then(html => {
+                    document.getElementById("itemsContainer").innerHTML = html;
+                });
+        }
+    </script>
+}

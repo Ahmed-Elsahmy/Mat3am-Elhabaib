@@ -12,12 +12,9 @@ namespace Mat3am_Elhabaib.DataBase
         public DbSet<Category> categories { get; set; }
 
         public DbSet<Reservations> reservations { get; set; }
-
         public DbSet<Order> orders { get; set; }
         public DbSet<OrderItems> orderItems { get; set; }
         public DbSet<Review> reviews { get; set; }
-
-        public DbSet<Invoice> invoices { get; set; }
-
+        public DbSet<ShoppingCart> shoppingCarts { get; set; }
     }
 }

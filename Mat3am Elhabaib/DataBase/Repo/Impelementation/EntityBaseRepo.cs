@@ -20,7 +20,7 @@ namespace Mat3am_Elhabaib.DataBase.Repo.Impelementation
 
         public async Task DeleteById(int Id)
         {
-            var data = await _appDbContext.Set<T>().FirstOrDefaultAsync(id => id.id == Id);
+            var data = await _appDbContext.Set<T>().FirstOrDefaultAsync(id =>id.Id== Id);
             EntityEntry entity = _appDbContext.Entry<T>(data);
             entity.State = EntityState.Deleted;
             await _appDbContext.SaveChangesAsync();
@@ -34,7 +34,7 @@ namespace Mat3am_Elhabaib.DataBase.Repo.Impelementation
 
         public async Task<T> GetbyId(int id)
         {
-            var data = await _appDbContext.Set<T>().FirstOrDefaultAsync(n => n.id == id);
+            var data = await _appDbContext.Set<T>().FirstOrDefaultAsync(n => n.Id == id);
             return data;
         }
 
