@@ -1,5 +1,6 @@
 ﻿using Mat3am_Elhabaib.DataBase.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Mat3am_Elhabaib.Controllers
 {
@@ -27,6 +28,10 @@ namespace Mat3am_Elhabaib.Controllers
             var filteredItems = await _itemsService.GetItemsByCategoryIdAsync(categoryId);
             return PartialView("_ItemsPartial", filteredItems);
         }
-
+        public async Task<IActionResult> GetAllItemsPartial()
+        {
+            var items = await _itemsService.GetAll(); // أو أي طريقة تجيب كل الـ Items
+            return PartialView("_ItemsPartial", items);
+        }
     }
 }

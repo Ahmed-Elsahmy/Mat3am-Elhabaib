@@ -2,45 +2,138 @@
 @{
     ViewData["Title"] = "Users";
 }
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<div class="order-container">
+    <p class="text-brown text-center" style="font-family: 'Times New Roman', serif; font-size: 30px; color: #F5C45E;">
+        <b>Users</b>
+
+    </p>
 
 
+    <table class="base-table">
+        <thead>
+            <tr>
+                <th class="Customer-Name">Name</th>
+                <th class="Customer-Name">Email</th>
+                <th class="Customer-Name">Phone Number</th>
+                <th class="Customer-Name">Location</th>
 
-<div class="row">
-    <div class="col-md-8 offset-2">
-        <p>
-            <h4 style="color:white">List of all your orders</h4>
-        </p>
 
-        <table class="table">
-            <thead>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
                 <tr>
-                    <th>User Name</th>
-                    <th>User Email</th>
-                    <th>User Phone Number</th>
+                    <td>@item.UserName</td>
+                    <td>@item.Email</td>
+                    <td>@item.PhoneNumber</td>
+                    <td>@item.Location</td>
 
                 </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>@item.UserName</td>
-                        <td class="align-middle">
-                           @item.Email
-                        </td>
-                        <td class="align-middle">
-                            @item.PhoneNumber
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+            }
+        </tbody>
+    </table>
 
-    </div>
 </div>
-<style>
-    .table{
-        color:white;
-    }
-</style>
 
+<style>
+    body {
+        background-color: #222222;
+        padding-top: 70px;
+    }
+
+    .order-container {
+        max-width: 100%;
+        background-color: #222222;
+        margin: 50px auto;
+        background: #222222;
+        padding: 20px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .base-table {
+        width: 100%;
+        border-color: #674636;
+    }
+
+        .base-table th, .base-table td {
+            border: 1px solid #FFFDF6;
+            background-color: #F5C45E;
+            padding: 10px;
+            text-align: left;
+            color: #674636;
+            text-align: center;
+        }
+
+        .base-table td {
+            border: 1px solid #FFFDF6;
+            background-color: #181C14;
+            color: #FDFAF6;
+            padding: 10px;
+            text-align: left;
+        }
+
+    .nested-table {
+        width: 100%;
+        border-color: #674636;
+        border-radius: 60px;
+    }
+
+        .nested-table th .nested-table td {
+            border: 1px solid #ccc;
+            background-color: #F7EFE5;
+            border-radius: 60px;
+            padding: 10px;
+            text-align: left;
+            color: #674636;
+        }
+
+        .nested-table td {
+            border: 1px solid #ccc;
+            background-color: #FCFAEE;
+            color: #000000;
+            padding: 10px;
+            text-align: left;
+        }
+
+    .link {
+        color: #674636;
+        text-decoration: none;
+        padding-left: 35px;
+        box-shadow: none;
+        text-align: center;
+    }
+
+        .link:hover {
+            text-decoration: none;
+            color: #674636;
+            text-decoration: none;
+            box-shadow: none;
+        }
+
+    /* Button styling */
+    .button1 {
+        border: 1px solid #ccc;
+        background-color: #F7EFE5;
+        padding: 10px 20px;
+        text-align: center;
+        color: #674636;
+        display: inline-block;
+        font-weight: bold;
+    }
+
+        .button1:hover {
+            box-shadow: 0 6px 8px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+    .button-container {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+</style>

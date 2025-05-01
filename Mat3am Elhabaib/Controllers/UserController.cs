@@ -94,6 +94,13 @@ namespace Mat3am_Elhabaib.Controllers
             await signInManager.SignOutAsync();
             return RedirectToAction("Login" , "User");
         }
+  
+        [Authorize(Roles = "Admin")]
+        public IActionResult AddAdmin()
+        {
+            return View(new RegesterVM());
+
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
@@ -123,7 +130,7 @@ namespace Mat3am_Elhabaib.Controllers
 
                     await userManager.AddToRoleAsync(userModel, UserRoles.Admin);
                     await signInManager.SignInAsync(userModel, false);
-                    return RedirectToAction("Index", "Items");
+                    return RedirectToAction("Index", "Home");
 
 
 

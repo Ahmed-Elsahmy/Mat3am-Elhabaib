@@ -114,7 +114,7 @@ namespace Mat3am_Elhabaib.Controllers
                 return View("NOT FOUND");
             }
             await service.DeleteById(id);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index","Home");
         }
     }
 

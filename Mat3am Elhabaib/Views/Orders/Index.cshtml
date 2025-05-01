@@ -1,82 +1,191 @@
-﻿@model List<Order>
+﻿@model IEnumerable<Order>
 @{
     ViewData["Title"] = "Index";
 }
 
-<div class="row">
-    <div class="col-md-8 offset-2">
-        <p>
-            <h4 style="color:white">List of all your orders</h4>
-        </p>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-        <table class="table">
+<div class="order-container">
+    <p class="text-brown text-center" style="font-family: 'Times New Roman', serif; font-size: 30px; color: #F5C45E;">
+        <b>Orders</b> <i class='far fa-edit'></i>
+    </p>
+    @if (Model == null || Model.Count() == 0)
+    {
+        <p style="color: #F4F8D3">You do not have any orders yet! </p>
+    }
+    else
+    {
+        <table class="base-table">
             <thead>
                 <tr>
-                    <th>Paymet Method</th>
-                    <th>Items</th>
-                    <th>Total</th>
-                    <th>Delete</th>
-                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
-                    {
-                        <th>User</th>
-                    }
-                       @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
-                    {
-                        <th>Phone Number</th>
-                    }
-                           @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
-                    {
-                        <th>Location</th>
-                    }
+                    <th class="Customer-Name">Customer Name</th>
+                    <th class="Order-Date">Order Date <i class='fas fa-calendar-alt'></i>:</th>
+                    <th class="Order-Date">Order Items:</th>
+
+                    <th class="Customer-Location">Customer Location</th>
+                    <th class="Customer-Number">Phone Number</th>
+
+                    <th class="Customer-Items">Actions </th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var order in Model)
+                @foreach (var item in Model)
                 {
                     <tr>
-                        <td>Cash on delivery</td>
-                        <td class="align-middle">
-                            <ul style="list-style-type:none">
-                                @foreach (var item in order.OrderItems)
-                                {
-                                    <li>
-                                        <div class="alert alert-info" role="alert">
-                                            <span class="badge bg-success">@item.Quantity</span> @item.UnitPrice - @item.items.Name]
-                                        </div>
-                                    </li>
-                                }
-                            </ul>
-                        </td>
-                        <td class="align-middle">
-                            @order.OrderItems.Select(m => m.items.Price * m.Quantity).Sum()
-                        </td>
+                        <td>@item.user.UserName</td>
+                        <td>@item.OrderDate</td>
                         <td>
-                            <form asp-action="DeleteOrder" method="post" asp-route-id="@order.Id">
+                            <table class="nested-table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Item Name
+                                        </th>
+                                        <th>
+                                            Price <i class='fas fa-dollar-sign'></i>
+                                        </th>
+                                        <th>
+                                            Amount
+                                        </th>
+                                        <th>
+                                            Total Price <i class='fas fa-dollar-sign'></i>
+                                        </th>
+                                    </tr>
+                                </thead>
+                        @foreach(var oi in item.OrderItems)
+                        {
+                                   
+                                    <tbody>
+                                       <tr>
+                                           <td>
+                                               @oi.items.Name
+                                           </td>
+                                            <td>
+                                                @oi.UnitPrice
+                                            </td>
+                                            <td>
+                                                @oi.Quantity
+                                            </td>
+                                            <td>
+                                                @oi.TotalPrice
+                                            </td>
+                                       </tr>
+                                    </tbody>
+                        }
+                            </table>
+
+                        </td>
+                        <td>@item.user.Location</td>
+                        <td>@item.user.PhoneNumber</td>
+                        <td>
+                            <form asp-action="DeleteOrder" method="post" asp-route-id="@item.Id">
                                 <button type="submit" class="btn btn-danger" style="border:1px solid white;border-radius:30px;"><i class="bi bi-trash"></i></button>
                             </form>
-                        </td>
-                        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
-                        {
-                            <td class="align-middle"> @order.user. </td>
-                        }
-                        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
-                        {
-                            <td class="align-middle"> @order.user.PhoneNumber </td>
-                        }
-                        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
-                        {
-                            <td class="align-middle"> @order.user.Location </td>
-                        }
 
+                        </td>
                     </tr>
                 }
             </tbody>
         </table>
-
-    </div>
-</div>
-<style>
-    .table{
-        color:white;
     }
+</div>
+
+<style>
+    body {
+        background-color: #222222;
+        padding-top: 70px;
+    }
+
+    .order-container {
+        max-width: 100%;
+        background-color: #222222;
+        margin: 50px auto;
+        background: #222222;
+        padding: 20px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .base-table {
+        width: 100%;
+        border-color: #674636;
+    }
+
+        .base-table th, .base-table td {
+            border: 1px solid #FFFDF6;
+            background-color: #F5C45E;
+            padding: 10px;
+            text-align: left;
+            color: #674636;
+            text-align: center;
+        }
+
+        .base-table td {
+            border: 1px solid #FFFDF6;
+            background-color: #181C14;
+            color: #FDFAF6;
+            padding: 10px;
+            text-align: left;
+        }
+
+    .nested-table {
+        width: 100%;
+        border-color: #674636;
+        border-radius: 60px;
+    }
+
+        .nested-table th .nested-table td {
+            border: 1px solid #ccc;
+            background-color: #F7EFE5;
+            border-radius: 60px;
+            padding: 10px;
+            text-align: left;
+            color: #674636;
+        }
+
+        .nested-table td {
+            border: 1px solid #ccc;
+            background-color: #FCFAEE;
+            color: #000000;
+            padding: 10px;
+            text-align: left;
+        }
+
+    .link {
+        color: #674636;
+        text-decoration: none;
+        padding-left: 35px;
+        box-shadow: none;
+        text-align: center;
+    }
+
+        .link:hover {
+            text-decoration: none;
+            color: #674636;
+            text-decoration: none;
+            box-shadow: none;
+        }
+
+    /* Button styling */
+    .button1 {
+        border: 1px solid #ccc;
+        background-color: #F7EFE5;
+        padding: 10px 20px;
+        text-align: center;
+        color: #674636;
+        display: inline-block;
+        font-weight: bold;
+    }
+
+        .button1:hover {
+            box-shadow: 0 6px 8px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+    .button-container {
+        text-align: center;
+        margin-top: 20px;
+    }
+
 </style>

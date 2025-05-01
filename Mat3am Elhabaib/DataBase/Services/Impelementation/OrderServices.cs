@@ -1,17 +1,19 @@
-﻿using Mat3am_Elhabaib.DataBase.Services.Interface;
+﻿using Mat3am_Elhabaib.DataBase.Repo.Impelementation;
+using Mat3am_Elhabaib.DataBase.Services.Interface;
 using Mat3am_Elhabaib.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Mat3am_Elhabaib.DataBase.Services.Impelementation
 {
-    public class OrderServices:IOrderService
+    public class OrderServices:EntityBaseRepo<Order> , IOrderService
     {
         private readonly AppDbContext appDbContext
             ;
-        public OrderServices(AppDbContext _appDbContext)
+        public OrderServices(AppDbContext _appDbContext) : base(_appDbContext)
         {
             appDbContext =_appDbContext ;
         }
+
 
         public async Task<bool> DeleteOrderAsync(int OrderID)
         {
@@ -29,6 +31,15 @@ namespace Mat3am_Elhabaib.DataBase.Services.Impelementation
 
             await appDbContext.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<Order> GetOrderByIdAsync(int OrderID)
+        {
+            var order = await appDbContext.orders
+                    .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.items)
+                    .FirstOrDefaultAsync(o => o.Id == OrderID);
+            return order;
         }
 
         public async Task<List<Order>> GetOrderByUserIDAndRoleAsync(string UserId, string UserRole)

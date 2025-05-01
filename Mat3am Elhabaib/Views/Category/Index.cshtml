@@ -1,34 +1,25 @@
-﻿@model IEnumerable<Review>
+﻿@model IEnumerable<Category>
 @{
     ViewData["Title"] = "Index";
 }
+
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 <div class="order-container">
     <p class="text-brown text-center" style="font-family: 'Times New Roman', serif; font-size: 30px; color: #F5C45E;">
-        <b>Reviews</b>
-        <a asp-controller="Review" asp-action="Create" class="btn btn-success" style="border:1px solid white;border-radius:30px;"><i class="bi bi-plus-circle"></i> Review Us </a>
+        <b>Categories</b>
+        <a asp-controller="Category" asp-action="Create"class="btn btn-success" style="border:1px solid white;border-radius:30px;"><i class="bi bi-plus-circle"></i> Add New </a>
 
     </p>
-    @if (Model == null || Model.Count() == 0)
-    {
-        <p style="color: #F4F8D3">You do not have any Reservations yet! </p>
-     
-    }
-    else
-    {
+  
+    
         <table class="base-table">
             <thead>
                 <tr>
-                    <th class="Customer-Name">Rate</th>
-                    <th class="Order-Date">Comment  <i class='fas fa-calendar-alt'></i>:</th>
-                    <th class="Customer-Name">User Name</th>
-
-                    <th class="Customer-Number">Phone Number</th>
-                    <th class="Customer-Items">Edit </th>
-                    <th class="Customer-Items">Delete </th>
+                    <th class="Customer-Name">Name</th>
+             
 
                 </tr>
             </thead>
@@ -36,26 +27,13 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td>@item.Rate</td>
-                        <td>@item.Comment</td>
-                        <td>@item.user.UserName</td>
-                        <td>@item.user.PhoneNumber</td>
-                        <td>
-                            <form asp-action="Edit" method="get" asp-route-id="@item.Id">
-                                <button type="submit" class="btn btn-success" style="border:1px solid white;border-radius:30px;"><i class="bi bi-pencil-square"></i></button>
-                            </form>
-
-                        </td>
-                        <td>
-                            <form asp-action="Delete" method="post" asp-route-id="@item.Id">
-                                <button type="submit" class="btn btn-danger" style="border:1px solid white;border-radius:30px;"><i class="bi bi-trash"></i></button>
-                            </form>
-                        </td>
+                        <td>@item.Name</td>
+                     
                     </tr>
                 }
             </tbody>
         </table>
-    }
+    
 </div>
 
 <style>

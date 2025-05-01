@@ -1,0 +1,77 @@
+﻿@model Order
+@{
+    ViewData["Title"] = "ViewOrderItems";
+}
+
+<div class="order-container">
+    <p class="text-brown text-center" style="font-family: 'Times New Roman', serif; font-size: 30px; color: #674636;"> <b>Orders</b> <i class='far fa-edit'></i></p>
+
+    <table class="base-table">
+        <thead>
+            <tr>
+                <th>Prodcut Name </th>
+                <th> Price <i class='fas fa-dollar-sign'></i> </th>
+                <th> Quantity :</th>
+                <th> Total Price <i class='fas fa-dollar-sign'></i>  </th>
+            </tr>
+
+        </thead>
+        <tbody>
+            @foreach (var Items in Model.OrderItems)
+            {
+                <tr>
+                  @*   <td>
+                        @Items.items.Name
+                    </td> *@
+                    <td>
+                        @Items.items.Price <i class='fas fa-dollar-sign'></i>
+                    </td>
+                    <td>
+                        @Items.Quantity
+                    </td>
+                    <td>
+                      @Items.TotalPrice <i class='fas fa-dollar-sign'></i>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<style>
+    body {
+        background-color: #FFFBF5;
+        padding-top: 70px;
+    }
+
+    .order-container {
+        max-width: 100%;
+        background-color: #F7EFE5;
+        margin: 50px auto;
+        background: #fff;
+        padding: 20px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .base-table {
+        width: 100%;
+        border-color: #674636;
+    }
+
+        .base-table th, .base-table td {
+            border: 1px solid #ccc;
+            background-color: #F7EFE5;
+            padding: 10px;
+            text-align: left;
+            color: #674636;
+            text-align: center;
+        }
+
+        .base-table td {
+            border: 1px solid #ccc;
+            background-color: #FCFAEE;
+            padding: 10px;
+            text-align: left;
+        }
+
+</style>

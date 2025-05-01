@@ -4,49 +4,84 @@
 }
 
 <div class="container my-5">
-    <h2 class="text-center mb-4">📋 Our Menu</h2>
-
-    <!-- Categories as Filter Buttons -->
-    <div class="d-flex flex-wrap justify-content-center mb-5">
-     
+    <div class="section-title text-center mb-4">
+        <small style="margin-top: 3rem; display: inline-block; color: #FFFDF6; letter-spacing: 2px; border-bottom: 2px solid #d9a74d;">MENU</small>
+        <h2 class="text-warning mt-2" style="font-weight: bold;">Check Our Tasty Menu</h2>
+        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+        {
+            <div class="text-white" style="">
+                <a asp-controller="Items" asp-action="Create" class="btn btn-success" style="border:1px solid white;border-radius:30px;"><i class="bi bi-plus-circle"></i> Add New </a>
+            </div>
+        }
     </div>
 
-    <div class="row" data-aos="fade-up" data-aos-delay="100">
-        <div class="col-lg-12 d-flex justify-content-center">
-            <ul class="menu-filters isotope-filters">
-                <li>
-                    <button class="btn btn-primary m-2" onclick="loadItems(0)">All</button>
-                </li>
+    <!-- Filter Buttons -->
+    <div class="d-flex justify-content-center mb-5 flex-wrap menu-filters">
+        <button class="menu-btn active" onclick="loadItems(0)">All</button>
 
-                @foreach (var cat in categories)
-                {
-                   <li>
-                        <button class="btn btn-outline-primary m-2" onclick="loadItems(@(cat.Id))">
-                            @cat.Name
-                        </button>
-                   </li> 
-                }
-            </ul>
-        </div>
+        @foreach (var cat in categories)
+        {
+            <button class="menu-btn" onclick="loadItems(@(cat.Id))">
+                @cat.Name
+            </button>
+        }
     </div>
 
-    <!-- Items Display Area -->
+    <!-- Items Display -->
     <div id="itemsContainer">
         @await Html.PartialAsync("_ItemsPartial", Model)
     </div>
 </div>
 
+<!-- Custom Styling -->
+<style>
+    .menu-btn {
+        background: none;
+        border: none;
+        margin: 0 10px;
+        padding: 5px 10px;
+        color: #ccc;
+        font-size: 16px;
+        transition: color 0.3s, border-bottom 0.3s;
+        border-bottom: 2px solid transparent;
+    }
+
+    .menu-btn:hover,
+    .menu-btn.active {
+        color: #d9a74d; /* الذهبي */
+        border-bottom: 2px solid #d9a74d;
+    }
+
+    .section-title small {
+        display: inline-block;
+        color: #aaa;
+        border-color: #d9a74d;
+    }
+
+    .section-title h2 {
+        color: #d9a74d;
+    }
+
+    body {
+        background-color: #111; /* لون الخلفية الداكن */
+        color: #fff;
+    }
+</style>
+
 @section Scripts {
     <script>
         function loadItems(categoryId) {
             let url = categoryId === 0
-                ? '@Url.Action("Index", "Menu")'
-                : '@Url.Action("FilterItems", "Menu")' + '?categoryId=' + categoryId;
+        ? '@Url.Action("GetAllItemsPartial", "Menu")'
+        : '@Url.Action("FilterItems", "Menu")' + '?categoryId=' + categoryId;
 
             fetch(url)
                 .then(res => res.text())
                 .then(html => {
                     document.getElementById("itemsContainer").innerHTML = html;
+                    // Update active class
+                    document.querySelectorAll('.menu-btn').forEach(btn => btn.classList.remove('active'));
+                    event.target.classList.add('active');
                 });
         }
     </script>

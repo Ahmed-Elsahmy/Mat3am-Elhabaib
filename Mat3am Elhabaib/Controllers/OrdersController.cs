@@ -4,6 +4,7 @@ using Mat3am_Elhabaib.DataBase.Shop;
 using Mat3am_Elhabaib.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualBasic;
 using System.Security.Claims;
 
 namespace Mat3am_Elhabaib.Controllers
@@ -21,6 +22,7 @@ namespace Mat3am_Elhabaib.Controllers
             orderService = _orderService;
         }
         //return all orders 
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             string UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -29,6 +31,15 @@ namespace Mat3am_Elhabaib.Controllers
             return View(orders);
         }
 
+        public async Task<IActionResult> ViewOrderItems(int id)
+        {
+            var order = await orderService.GetOrderByIdAsync(id);
+            if (order == null) {
+                return View("Not Found");
+            }
+  
+            return View(order);
+        }
         public  IActionResult ShopingCart()
         {
             var items =  shoppingCart.GetShoppingCartItems();
@@ -73,7 +84,7 @@ namespace Mat3am_Elhabaib.Controllers
             await orderService.StoreOrderAsync(items, userId);
             await shoppingCart.ClearShoppingCartAsync();
            
-            return View("OrderCompleted");
+            return RedirectToAction("Index","Orders");
         }
         [Authorize]
         public async Task<IActionResult> DeleteOrder(int id)
