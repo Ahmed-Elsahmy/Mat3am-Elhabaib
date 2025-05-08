@@ -35,28 +35,32 @@ namespace Mat3am_Elhabaib.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegesterVM regesterVM)
         {
-            if (!ModelState.IsValid) return View(regesterVM);
-
-            var user = await userManager.FindByNameAsync(regesterVM.UserName);
-            if (user != null)
+            if (ModelState.IsValid)
             {
-                TempData["Error"] = "This Name is already in use";
-                return View(regesterVM);
+                User user = new User();
+                user.UserName = regesterVM.UserName;
+                user.Email = regesterVM.Email;
+                user.PasswordHash = regesterVM.Password;
+                user.PhoneNumber = regesterVM.PhoneNumber;
+                user.Location = regesterVM.Location;
+                IdentityResult Result = await userManager.CreateAsync(user, regesterVM.Password);
+                if (Result.Succeeded)
+                {
+                    await signInManager.SignInAsync(user, false);
+                    return RedirectToAction("Index", "Home");
+
+
+                }
+                else
+                {
+                    foreach (var error in Result.Errors)
+                    {
+                        ModelState.AddModelError("Password", error.Description);
+                    }
+                }
+
             }
-
-            var newUser = new User()
-            {
-                UserName = regesterVM.UserName,
-                Email = regesterVM.Email,
-                PhoneNumber = regesterVM.PhoneNumber,
-                Location = regesterVM.Location,
-            };
-            var newUserResponse = await userManager.CreateAsync(newUser, regesterVM.Password);
-
-            if (newUserResponse.Succeeded)
-                await userManager.AddToRoleAsync(newUser, UserRoles.User);
-
-            return RedirectToAction("Index", "Home");
+            return View(regesterVM);
         }
         [HttpGet]
         public IActionResult Login()
@@ -66,26 +70,23 @@ namespace Mat3am_Elhabaib.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginVM loginVM)
         {
-            if (!ModelState.IsValid) return View(loginVM);
-
-            var user = await userManager.FindByNameAsync(loginVM.UserName);
-            if (user != null)
+            if (ModelState.IsValid)
             {
-                var passwordCheck = await userManager.CheckPasswordAsync(user, loginVM.Password);
-                if (passwordCheck)
+                User userModel = await userManager.FindByNameAsync(loginVM.UserName);
+                if (userModel != null)
                 {
-                    var result = await signInManager.PasswordSignInAsync(user, loginVM.Password, false, false);
-                    if (result.Succeeded)
+                    bool found = await userManager.CheckPasswordAsync(userModel, loginVM.Password);
+                    if (found == true)
                     {
-                        await signInManager.SignInAsync(user, loginVM.RememberMe);
+                        await signInManager.SignInAsync(userModel, loginVM.RememberMe);
                         return RedirectToAction("Index", "Home");
+
                     }
                 }
-                TempData["Error"] = "Wrong credentials. Please, try again!";
-                return View(loginVM);
-            }
+                ModelState.AddModelError("", "user name or password are wrong ");
 
-            TempData["Error"] = "Wrong credentials. Please, try again!";
+
+            }
             return View(loginVM);
         }
         [HttpPost]

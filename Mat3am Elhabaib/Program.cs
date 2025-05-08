@@ -24,6 +24,11 @@ namespace Mat3am_Elhabaib
                 options.LoginPath = "/User/Login";
                 //options.AccessDeniedPath = "/User/AccessDenied"; // ???????
             });
+            //builder.Services.AddIdentity<User, IdentityRole>(options =>
+            //{
+            //    // Identity options here
+            //    options.SignIn.RequireConfirmedAccount = false; // Adjust as per your needs
+            //});
             builder.Services.AddScoped<IItemsService, ItemService>();
             builder.Services.AddScoped<ICategory, CategoryService>();
             builder.Services.AddScoped<IOrderService, OrderServices>();
