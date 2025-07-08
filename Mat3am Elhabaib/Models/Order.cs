@@ -14,5 +14,6 @@ namespace Mat3am_Elhabaib.Models
         [ForeignKey("UserId")]
         public  User user { get; set; }
         public List<OrderItems> OrderItems { get; set; }
+        public bool Delevird { get; set; } = false;
     }
 }

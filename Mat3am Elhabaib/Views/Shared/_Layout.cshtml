@@ -55,12 +55,12 @@
 
                 <nav id="navmenu" class="navmenu">
                     <ul>
-                        <li><a asp-controller="Home" asp-action="Index" class="active">Home<br></a></li>
-                        <li><a asp-controller="Menu" asp-action="Index">Menu</a></li>
+                        <li><a asp-controller="Home" asp-action="Index" >Home<br></a></li>
+                        <li><a asp-controller="Menu" asp-action="Index" >Menu</a></li>
                         <li><a asp-controller="Review" asp-action="Index">Reviews</a></li>
-                        <li><a asp-controller="Reservation" asp-action="Index">Reservations</a></li>
+                        <li><a asp-controller="Reservation" asp-action="Index" >Reservations</a></li>
                         <li>
-                                <a asp-controller="Orders" asp-action="Index">Orders</a>
+                            <a asp-controller="Orders" asp-action="Index" >Orders</a>
                         </li>
                         @if (User.Identity.IsAuthenticated && User.IsInRole("User"))
                         {

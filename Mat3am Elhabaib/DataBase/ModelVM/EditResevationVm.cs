@@ -8,7 +8,7 @@ namespace Mat3am_Elhabaib.DataBase.ModelVM
         public int Id { get; set; }
         public int NumberOftables { get; set; }
         [DataType(DataType.DateTime)]
-        public DateTime time { get; set; }
+        public DateTime time { get; set; } = DateTime.Now;
 
         public string? PhoneNumber { get; set; }
     }

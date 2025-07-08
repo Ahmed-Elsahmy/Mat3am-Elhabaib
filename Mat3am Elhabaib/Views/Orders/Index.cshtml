@@ -25,8 +25,11 @@
 
                     <th class="Customer-Location">Customer Location</th>
                     <th class="Customer-Number">Phone Number</th>
+                    <th class="Customer-Items">Delevired <i class="bi bi-bicycle"></i> </th>
 
-                    <th class="Customer-Items">Actions </th>
+                    <th class="Customer-Items">Delete Order </th>
+                    
+
                 </tr>
             </thead>
             <tbody>
@@ -79,8 +82,38 @@
                         <td>@item.user.Location</td>
                         <td>@item.user.PhoneNumber</td>
                         <td>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                if (!item.Delevird)
+                                {
+                                    <a class="btn btn-primary" asp-controller="Orders" asp-action="MakeOrderDelevird"
+                                       asp-route-id="@item.Id">
+                                       Change Status
+                                        <i class="bi bi-bicycle"></i>
+                                    </a>
+                                }
+                                else
+                                {
+                                    <p class="btn btn-success">Delivered <i class="bi bi-bicycle"></i></p>
+                                }
+                            
+                            }
+                            else 
+                            {
+                                if (!item.Delevird)
+                                {
+                                    <p class="btn btn-danger">Not Yet !</p>
+                                }
+                                else
+                                {
+                                    <p class="btn btn-success">Delivered <i class="bi bi-bicycle" style="width:45px"></i></p>
+                                }
+                            }
+                        </td>
+
+                        <td>
                             <form asp-action="DeleteOrder" method="post" asp-route-id="@item.Id">
-                                <button type="submit" class="btn btn-danger" style="border:1px solid white;border-radius:30px;"><i class="bi bi-trash"></i></button>
+                                <button type="submit" class="btn btn-danger" ><i class="bi bi-trash"></i></button>
                             </form>
 
                         </td>

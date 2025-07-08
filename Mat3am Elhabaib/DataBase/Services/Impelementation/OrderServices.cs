@@ -14,7 +14,17 @@ namespace Mat3am_Elhabaib.DataBase.Services.Impelementation
             appDbContext =_appDbContext ;
         }
 
-
+        public async Task<bool> DeliverdOrder(int OrderId)
+        {
+            var order = await appDbContext.orders.Include(o => o.OrderItems).FirstOrDefaultAsync(o => o.Id == OrderId);
+            if (order == null) { 
+                return false;
+            }
+            order.Delevird=true;
+           
+            await appDbContext.SaveChangesAsync();
+            return true;
+        }
         public async Task<bool> DeleteOrderAsync(int OrderID)
         {
             var order = await appDbContext.orders.Include(o => o.OrderItems)

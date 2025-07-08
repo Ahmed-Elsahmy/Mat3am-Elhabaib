@@ -45,6 +45,17 @@ namespace Mat3am_Elhabaib.Controllers
             //{
             //    reservations.PhoneNumber = reservations.user.PhoneNumber;
             //}
+            if (reservations.NumberOftables <= 0)
+            {
+                ModelState.AddModelError("", "Number Of Table Can't be zero to continue reservation .. !");
+                return View(reservations);
+            }
+            if(reservations.time < DateTime.Now)
+            {
+                ModelState.AddModelError("", "Reservation date Can't be in Past Date .. !");
+                return View(reservations);
+            }
+
             try
             {
                 await _reservationServices.CreateReservationAsync(reservations);
@@ -78,6 +89,15 @@ namespace Mat3am_Elhabaib.Controllers
             if (id != model.Id)
             {
                 return View("Not Found");
+            }
+            if (model.time < DateTime.Now)
+            {
+                ModelState.AddModelError("", "Reservation date Can't be in Past Date .. !");
+                return View(model);
+            }
+            if (model.NumberOftables <= 0) {
+                ModelState.AddModelError("", "Number Of Table Can't be zero to continue reservation .. ! ");
+                return View(model);
             }
             try
             {

@@ -4,8 +4,10 @@ using Mat3am_Elhabaib.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
+using System.Data;
 
 namespace Mat3am_Elhabaib.Controllers
 {
@@ -35,6 +37,13 @@ namespace Mat3am_Elhabaib.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegesterVM regesterVM)
         {
+            char c1 = regesterVM.PhoneNumber[0];
+            char c2 = regesterVM.PhoneNumber[1];
+            if (c1 != '0' || c2 != '1')
+            {
+                ModelState.AddModelError("", "Phone Number Is Invailid");
+                return View(regesterVM);
+             }
             if (ModelState.IsValid)
             {
                 User user = new User();
@@ -68,7 +77,7 @@ namespace Mat3am_Elhabaib.Controllers
             return View(new LoginVM());
         }
         [HttpPost]
-        public async Task<IActionResult> Login(LoginVM loginVM)
+        public async Task<IActionResult> Login(LoginVM loginVM , string? returnUrl = null)
         {
             if (ModelState.IsValid)
             {
@@ -79,8 +88,12 @@ namespace Mat3am_Elhabaib.Controllers
                     if (found == true)
                     {
                         await signInManager.SignInAsync(userModel, loginVM.RememberMe);
-                        return RedirectToAction("Index", "Home");
+                        if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                        {
+                            return Redirect(returnUrl);
+                        }
 
+                        return RedirectToAction("Index", "Home");
                     }
                 }
                 ModelState.AddModelError("", "user name or password are wrong ");
@@ -89,6 +102,7 @@ namespace Mat3am_Elhabaib.Controllers
             }
             return View(loginVM);
         }
+
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
@@ -157,6 +171,74 @@ namespace Mat3am_Elhabaib.Controllers
                 }
             }
             return View(regesterVM);
+        }
+        [HttpGet]
+        [Authorize]
+        public async Task< IActionResult> EditUserProfile(string username)
+        {
+            var data = await userManager.FindByNameAsync(username);
+            if (data == null) { 
+                return View("NOT FOUND");
+            }
+            var response = new EditUser()
+            {
+                UserName = data.UserName,
+                Email = data.Email
+                ,
+                Location = data.Location,
+                PhoneNumber = data.PhoneNumber
+            };
+            return View(response);
+        }
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> EditUserProfile(string username, EditUser editUser)
+        {
+            var data = await userManager.FindByNameAsync(username);
+            
+            if (data == null)
+            {
+                return View("NOT FOUND");
+            }
+            if (string.IsNullOrEmpty(editUser.OldPasswrd))
+            {
+                ModelState.AddModelError("OldPasswrd", "Old password is required.");
+                return View(editUser);
+            }
+            // check old pass with already pass
+            if (!await userManager.CheckPasswordAsync(data, editUser.OldPasswrd))
+            {
+                ModelState.AddModelError("", "Old Password Is Incorrect");
+                return View(editUser);
+            }
+            if (ModelState.IsValid)
+            {
+                data.UserName =editUser.UserName;
+                data.Email = editUser.Email;
+                data.PhoneNumber = editUser.PhoneNumber;
+                data.Location = editUser.Location;
+                var updateresult = await userManager.UpdateAsync(data);
+                if (!string.IsNullOrWhiteSpace(editUser.NewPassword))
+                {
+                    var passresult = await userManager.ChangePasswordAsync(data,editUser.OldPasswrd,editUser.NewPassword);
+                    if (!passresult.Succeeded)
+                    {
+                        foreach (var error in passresult.Errors)
+                            ModelState.AddModelError("", error.Description);
+                        return View(editUser);
+                    }
+                }
+                if (updateresult.Succeeded)
+                {
+                    TempData["Success"] = "Profile updated successfully!";
+                    return RedirectToAction("Login", "User");
+                }
+                foreach(var error in updateresult.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+            }
+            return View(editUser);
         }
     }
 

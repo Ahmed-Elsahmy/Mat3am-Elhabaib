@@ -11,5 +11,6 @@ namespace Mat3am_Elhabaib.DataBase.Services.Interface
         Task<bool> DeleteOrderAsync(int OrderID);
 
         Task<Order > GetOrderByIdAsync(int OrderID);
+        Task<bool> DeliverdOrder(int OrderID);
     }
 }

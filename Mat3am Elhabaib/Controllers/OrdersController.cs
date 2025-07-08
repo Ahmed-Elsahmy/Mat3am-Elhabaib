@@ -97,5 +97,16 @@ namespace Mat3am_Elhabaib.Controllers
 
             return RedirectToAction(nameof(Index)); // Redirect to the orders list
         }
+        [Authorize(Roles ="Admin")]
+        public async Task<IActionResult> MakeOrderDelevird(int id)
+        {
+            var data = await orderService.DeliverdOrder(id);
+            if (!data)
+            {
+                return NotFound();
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
     }
 }

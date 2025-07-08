@@ -4,11 +4,11 @@
 @if (!User.Identity.IsAuthenticated)
 {
     <div class="d-flex align-items-center">
-        <a class="btn btn-outline-light me-2" asp-controller="User" asp-action="Login" style="border:1px solid white;border-radius:30px;">
+        <a class="btn btn-outline-light me-2" asp-controller="User" asp-action="Login" style="border:1px solid black;border-radius:30px;">
             <i class="bi bi-box-arrow-in-right"></i> Log in
         </a>
 
-        <a class="btn btn-outline-light" asp-controller="User" asp-action="Register" style="border:1px solid white;border-radius:30px;">
+        <a class="btn btn-outline-light" asp-controller="User" asp-action="Register" style="border:1px solid black;border-radius:30px;">
             <i class="bi bi-person-plus"></i> Register
         </a>
     </div>
@@ -27,6 +27,8 @@ else
                 <i class="bi bi-box-arrow-in-right"></i> Log out
             </button>
         </form>
+        <a class="btn btn-outline-light me-2" asp-controller="User" asp-action="EditUserProfile" asp-route-username="@UserManager.GetUserName(User)" id="profile-btn" aria-expanded="false" style="border:1px solid white;border-radius:30px; ">
+            <i class="bi bi-person-fill"></i> Edit Profile</a>
     </div>
 
     @if (User.IsInRole("Admin"))

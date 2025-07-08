@@ -4,8 +4,10 @@ using Mat3am_Elhabaib.DataBase.Services.Interface;
 using Mat3am_Elhabaib.DataBase.Shop;
 using Mat3am_Elhabaib.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Configuration;
 
 namespace Mat3am_Elhabaib
 {
@@ -38,13 +40,13 @@ namespace Mat3am_Elhabaib
             {
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             });
-       
+
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             builder.Services.AddMemoryCache();
             builder.Services.AddScoped(sc => Cart.GetShoppingCart(sc));
             builder.Services.AddMemoryCache();
             builder.Services.AddSession();
-     
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
