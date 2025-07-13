@@ -1,157 +1,110 @@
 ﻿@model IEnumerable<Reservations>
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Reservations";
 }
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-<div class="order-container">
-    <p class="text-brown text-center" style="font-family: 'Times New Roman', serif; font-size: 30px; color: #F5C45E;">
-        <b>Reservations</b>
-        <a asp-controller="Reservation" asp-action="Create" class="btn btn-success" style="border:1px solid white;border-radius:30px;"><i class="bi bi-plus-circle"></i> Book A Table </a>
+<div class="reservation-container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-warning" style="font-family: 'Times New Roman', serif;">
+            <i class="bi bi-calendar2-week me-2"></i> Reservations
+        </h2>
+        <a asp-controller="Reservation" asp-action="Create" class="btn btn-warning text-dark fw-semibold px-4 py-2 rounded-pill shadow-sm">
+            <i class="bi bi-plus-circle me-1"></i> Book A Table
+        </a>
+    </div>
 
-    </p>
-    @if (Model == null || Model.Count() == 0)
+    @if (Model == null || !Model.Any())
     {
-        <p style="color: #F4F8D3">You do not have any Reservations yet! </p>
+        <p class="text-light">You do not have any reservations yet!</p>
     }
     else
     {
-        <table class="base-table">
-            <thead>
-                <tr>
-                    <th class="Customer-Name">Number Of Tables</th>
-                    <th class="Order-Date">Time And Date  <i class='fas fa-calendar-alt'></i>:</th>
-                    <th class="Customer-Name">User Name</th>
-
-                    <th class="Customer-Number">Phone Number</th>
-                    <th class="Customer-Items">Edit </th>
-                    <th class="Customer-Items">Delete </th>
-
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover text-center reservation-table">
+                <thead class="table-warning text-dark">
                     <tr>
-                        <td>@item.NumberOftables</td>
-                        <td>@item.time</td>
-                        <td>@item.user.UserName</td>
-                        <td>@item.user.PhoneNumber</td>
-                        <td>
-                              <form asp-action="Edit" method="get" asp-route-id="@item.Id">
-                                <button type="submit" class="btn btn-success" ><i class="bi bi-pencil-square"></i></button>
-                            </form>
-
-                        </td>
-                        <td>
-                            <form asp-action="Delete" method="post" asp-route-id="@item.Id">
-                                <button type="submit" class="btn btn-danger" ><i class="bi bi-trash"></i></button>
-                            </form>
-                        </td>
+                        <th>Number of Tables</th>
+                        <th>Time & Date</th>
+                        <th>User Name</th>
+                        <th>Phone Number</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.NumberOftables</td>
+                            <td>@item.time</td>
+                            <td>@item.user.UserName</td>
+                            <td>@item.user.PhoneNumber</td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.Id"
+                                   class="btn btn-sm btn-outline-success rounded-pill px-3">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+                            </td>
+                            <td>
+                                <form asp-action="Delete" method="post" asp-route-id="@item.Id" style="display:inline">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-3">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     }
 </div>
 
 <style>
     body {
         background-color: #222222;
-        padding-top: 70px;
+        margin: 0;
+        padding: 0;
     }
 
-    .order-container {
-        max-width: 100%;
-        background-color: #222222;
-        margin: 50px auto;
-        background: #222222;
-        padding: 20px;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    .reservation-container {
+        background-color: #181C14;
+        padding: 30px;
+        border-radius: 15px;
+        max-width: 1000px;
+        margin: 120px auto 50px auto; /* 👈 نزلنا الصفحة من تحت الـ navbar */
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
     }
 
-    .base-table {
+    .reservation-table {
+        border-collapse: collapse;
         width: 100%;
-        border-color: #674636;
     }
 
-        .base-table th, .base-table td {
-            border: 1px solid #FFFDF6;
+        .reservation-table th {
             background-color: #F5C45E;
-            padding: 10px;
-            text-align: left;
-            color: #674636;
-            text-align: center;
-        }
-
-        .base-table td {
-            border: 1px solid #FFFDF6;
-            background-color: #181C14;
-            color: #FDFAF6;
-            padding: 10px;
-            text-align: left;
-        }
-
-    .nested-table {
-        width: 100%;
-        border-color: #674636;
-        border-radius: 60px;
-    }
-
-        .nested-table th .nested-table td {
-            border: 1px solid #ccc;
-            background-color: #F7EFE5;
-            border-radius: 60px;
-            padding: 10px;
-            text-align: left;
             color: #674636;
         }
 
-        .nested-table td {
-            border: 1px solid #ccc;
-            background-color: #FCFAEE;
-            color: #000000;
-            padding: 10px;
-            text-align: left;
+        .reservation-table td {
+            background-color: #1F1F1F;
+            color: #F7EFE5;
+            vertical-align: middle;
         }
 
-    .link {
-        color: #674636;
-        text-decoration: none;
-        padding-left: 35px;
-        box-shadow: none;
-        text-align: center;
-    }
-
-        .link:hover {
-            text-decoration: none;
-            color: #674636;
-            text-decoration: none;
-            box-shadow: none;
+        .reservation-table tbody tr:hover td {
+            background-color: #2a2a2a;
         }
 
-    /* Button styling */
-    .button1 {
-        border: 1px solid #ccc;
-        background-color: #F7EFE5;
-        padding: 10px 20px;
-        text-align: center;
-        color: #674636;
-        display: inline-block;
-        font-weight: bold;
+    .btn-outline-success,
+    .btn-outline-danger {
+        border-width: 2px;
     }
 
-        .button1:hover {
-            box-shadow: 0 6px 8px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
-            transition: all 0.3s ease;
-            text-decoration: none;
-        }
-
-    .button-container {
-        text-align: center;
-        margin-top: 20px;
+    .text-warning {
+        color: #F5C45E !important;
     }
-
 </style>

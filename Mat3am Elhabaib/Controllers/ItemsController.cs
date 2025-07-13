@@ -36,11 +36,12 @@ namespace Mat3am_Elhabaib.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin")]
 
-        public async Task<IActionResult> Create(Items items)
+        public async Task<IActionResult> Create(Items items, IFormFileCollection images)
         { 
             try
             {
-                await service.CreateItemAsync(items);
+                Console.WriteLine("Images received: " + images.Count);
+                await service.CreateItemAsync(items,images);
 
 
             }
@@ -67,7 +68,7 @@ namespace Mat3am_Elhabaib.Controllers
             {
                 Id = data.Id,
                 Description = data.Description,
-                Imageurl = data.Imageurl,
+                Images = data.Images,
                 Name
                 = data.Name,
                 CategoryId = data.CategoryId,
@@ -78,22 +79,34 @@ namespace Mat3am_Elhabaib.Controllers
             return View(response);
         }
         [HttpPost]
-
-        public async Task<IActionResult> Edit(int id,EditItemVm items)
+        public async Task<IActionResult> Edit(EditItemVm item, IFormFileCollection images)
         {
-            if (id != items.Id)
-            {
-                return View("NOT FOUND");
-            }
+
+            var data = await service.GetItemByIdAsync(item.Id);
+
             if (!ModelState.IsValid)
             {
-                var dropdowm = await service.NewItemDropDownAsync();
-                ViewBag.Category = new SelectList(dropdowm.categories, "Id", "Name");
-                //return View(items);
+                ViewBag.Errors = ModelState
+    .Where(x => x.Value.Errors.Count > 0)
+    .Select(x => $"{x.Key}: {string.Join(", ", x.Value.Errors.Select(e => e.ErrorMessage))}")
+    .ToList();
+                if (images == null || images.Count == 0)
+                {
+                    item.Images = data.Images; // رجع الصور القديمة
+                }
+
+                var drop = await service.NewItemDropDownAsync();
+                ViewBag.Category = new SelectList(drop.categories, "Id", "Name");
+                return View(item);
             }
-            await service.UpdateItemAsync(items);
+
+            var result = await service.UpdateItemAsync(item, images);
+            if (!result)
+                return View("NOT FOUND");
+
             return RedirectToAction("Index", "Home");
         }
+
         [Authorize(Roles = "Admin")]
 
         public async Task<IActionResult> Delete(int id)
@@ -113,6 +126,15 @@ namespace Mat3am_Elhabaib.Controllers
             {
                 return View("NOT FOUND");
             }
+            foreach (var oldImage in data.Images)
+            {
+                var oldImagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/ImgItem/Profile", oldImage);
+                if (System.IO.File.Exists(oldImagePath))
+                {
+                    System.IO.File.Delete(oldImagePath);
+                }
+            }
+            data.Images.Clear();
             await service.DeleteById(id);
             return RedirectToAction("Index","Home");
         }

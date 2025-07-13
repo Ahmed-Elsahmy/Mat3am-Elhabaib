@@ -8,9 +8,9 @@ namespace Mat3am_Elhabaib.DataBase.Services.Interface
     {
         Task<Items> GetItemByIdAsync(int id);
 
-        Task CreateItemAsync(Items item);
+        Task CreateItemAsync(Items item, IFormFileCollection images);
 
-        Task UpdateItemAsync(EditItemVm item);
+        Task<bool> UpdateItemAsync(EditItemVm item , IFormFileCollection images);
         Task<NewItemDropDown> NewItemDropDownAsync();
         Task<IEnumerable<Items>> GetItemsByCategoryIdAsync(int categoryId);
 

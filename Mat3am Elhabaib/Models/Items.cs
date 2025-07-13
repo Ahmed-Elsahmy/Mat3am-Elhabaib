@@ -12,8 +12,7 @@ namespace Mat3am_Elhabaib.Models
         public  string Name  { get; set; }
         [Required(ErrorMessage ="Please add a description for an item")]
         public string Description { get; set; }
-        [DataType(DataType.Url)]
-        public string  Imageurl { get; set; }
+        public List<string>  Images { get; set; }
         [Required(ErrorMessage ="Please add a price for an item")]
         public decimal Price { get; set; }
         public int CategoryId { get; set; }

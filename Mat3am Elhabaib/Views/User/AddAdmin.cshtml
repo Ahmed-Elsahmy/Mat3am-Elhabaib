@@ -4,219 +4,120 @@
     ViewData["Title"] = "AddAdmin";
 }
 
-<!-- Navigation Bar -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
 <div class="blurred-background">
-    <!-- Register Form -->
     <div class="form-section d-flex justify-content-center align-items-center">
-        <div class="col-md-5 p-4 shadow-sm rounded form-container" style="padding-top:0px; margin-bottom:0px">
-            <p class="text-brown text-center create-account-heading" style="font-family: 'Times New Roman', serif; font-size: 30px; color: #EFEEEA;         font:bold;
- ">Create An Account <i class="bi bi-box-arrow-right"></i></p>
-            <form asp-action="AddAdmin" asp-controller="User" style="border: none; padding-left:15px; padding-right:15px; margin-top:5px; ">
-                <div asp-validation-summary="ModelOnly" class="text-dark-brown"></div>
+        <div class="col-md-6 p-5 shadow-lg rounded form-container bg-dark bg-opacity-75 text-light">
+            <h2 class="text-center text-warning mb-4" style="font-family:'Segoe UI', sans-serif;">
+                <i class="bi bi-person-plus-fill me-2"></i> Create Admin Account
+            </h2>
+
+            <form asp-action="AddAdmin" asp-controller="User">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
                 <div class="form-group mb-3">
-                    <label asp-for="UserName" class="control-label text-darker-brown">User Name</label>
-                    <input asp-for="UserName" class="form-control transparent-input border-dark-brown" autocomplete="off" />
-                    <span asp-validation-for="UserName" class="text-dark-brown"></span>
+                    <label asp-for="UserName">User Name</label>
+                    <input asp-for="UserName" class="form-control styled-input" />
+                    <span asp-validation-for="UserName" class="text-danger small"></span>
                 </div>
+
                 <div class="form-group mb-3">
-                    <label asp-for="Password" class="control-label text-darker-brown"> Password <i class="bi bi-lock"></i></label>
-                    <input asp-for="Password" class="form-control transparent-input border-dark-brown" type="password" autocomplete="off" />
-                    <span asp-validation-for="Password" class="text-dark-brown"></span>
+                    <label asp-for="Password">Password <i class="bi bi-lock-fill"></i></label>
+                    <input asp-for="Password" type="password" class="form-control styled-input" />
+                    <span asp-validation-for="Password" class="text-danger small"></span>
                 </div>
+
                 <div class="form-group mb-3">
-                    <label asp-for="ConfirmPassword" class="control-label text-darker-brown"> Confirm Password <i class="bi bi-lock"></i></label>
-                    <input asp-for="ConfirmPassword" class="form-control transparent-input border-dark-brown" type="password" autocomplete="off" />
-                    <span asp-validation-for="ConfirmPassword" class="text-dark-brown"></span>
+                    <label asp-for="ConfirmPassword">Confirm Password <i class="bi bi-lock-fill"></i></label>
+                    <input asp-for="ConfirmPassword" type="password" class="form-control styled-input" />
+                    <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
                 </div>
+
                 <div class="form-group mb-3">
-                    <label asp-for="Location" class="control-label text-darker-brown">Location <i class="bi bi-geo-alt-fill"></i></label>
-                    <input asp-for="Location" class="form-control transparent-input border-dark-brown" autocomplete="off" />
-                    <span asp-validation-for="Location" class="text-dark-brown"></span>
+                    <label asp-for="Location">Location <i class="bi bi-geo-alt-fill"></i></label>
+                    <input asp-for="Location" class="form-control styled-input" />
+                    <span asp-validation-for="Location" class="text-danger small"></span>
                 </div>
+
                 <div class="form-group mb-3">
-                    <label asp-for="Email" class="control-label text-darker-brown"> Email <i class="bi bi-envelope"></i></label>
-                    <input asp-for="Email" class="form-control transparent-input border-dark-brown" autocomplete="off" />
-                    <span asp-validation-for="Email" class="text-dark-brown"></span>
-                </div>
-                <div class="form-group mb-3">
-                    <label asp-for="PhoneNumber" class="control-label text-darker-brown">Phone Number <i class="bi bi-phone"></i></label>
-                    <input asp-for="PhoneNumber" class="form-control transparent-input border-dark-brown" autocomplete="off" />
-                    <span asp-validation-for="PhoneNumber" class="text-dark-brown"></span>
+                    <label asp-for="Email">Email <i class="bi bi-envelope-fill"></i></label>
+                    <input asp-for="Email" class="form-control styled-input" />
+                    <span asp-validation-for="Email" class="text-danger small"></span>
                 </div>
 
                 <div class="form-group mb-4">
-                    <input class="button1 w-100" type="submit" value="Add Admin" />
+                    <label asp-for="PhoneNumber">Phone Number <i class="bi bi-telephone-fill"></i></label>
+                    <input asp-for="PhoneNumber" class="form-control styled-input" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
+                </div>
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-warning w-100 py-2 fs-5 rounded-3">
+                        <i class="bi bi-person-plus me-1"></i> Add Admin
+                    </button>
                 </div>
             </form>
         </div>
     </div>
-
-
 </div>
 
 @section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")
 }
+
 <style>
-    .navbar {
-        padding: 5px;
-        width: 100%;
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 0;
-        z-index: 1000;
-    }
-
-    .bg-brown {
-        background-color: #865439;
-    }
-
-    .navbar-brand, .nav-link {
-        font-size: 18px;
-    }
-
-        .nav-link:hover {
-            color: #FFF8E7 !important;
-        }
-
-
-    .create-account-heading {
-        margin-top: 0;
-        font-size: 24px;
-    }
-
-    .form-section {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        border-color:aliceblue;
-    }
-
-    .button1 {
-        background-color: #FCB454;
-        border: none;
-        color: #FFF8E7;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        padding: 10px 20px;
-        font-size: 20px;
-        width: 100%;
-        border-radius: 10px;
-    }
-
-        .button1:hover {
-            box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
-            transition: all 0.3s ease;
-        }
-
     body {
-        height: 100%;
-        overflow-x: hidden;
-        font:bold;
         margin: 0;
         padding: 0;
-        padding-top: 100px;
-        padding-bottom: 100px;
-        padding-right: 120px;
+        font-family: 'Segoe UI', sans-serif;
+        background: #111;
     }
 
-    .blurred-background {
-        position: relative;
+    .blurred-background::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
         width: 100vw;
         height: 100vh;
-        z-index: 1;
+        background-image: url('https://img.freepik.com/free-photo/restaurant-interior_1127-3394.jpg');
+        background-size: cover;
+        background-position: center;
+        filter: blur(7px);
+        z-index: -1;
+        opacity: 0.8;
     }
-
-        .blurred-background::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: url('https://img.freepik.com/free-photo/restaurant-interior_1127-3394.jpg?t=st=1745881542~exp=1745885142~hmac=65c2e88c971151c393850b5c2f647a2e35977ae847188c77d5b48d8efdefca27&w=996');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            filter: blur(7px);
-            z-index: -1;
-            opacity: 0.8;
-            width: 100vw;
-            height: 100vh;
-        }
-
-    .form-section {
-        position: relative;
-        z-index: 1;
-    }
-
-    .text-brown {
-        color: #F8F4E1;
-    }
-
-    .text-darker-brown {
-        color: #F8F4E1;
-    }
-
-    .text-dark-brown {
-        color: #F8F4E1;
-    }
-
-    .border-dark-brown {
-        border-color: #FCB454;
-    }
-
-    .transparent-input {
-        background-color: rgba(255, 255, 255, 0.1);
-        color: #FCB454;
-        border: 1px solid #FCB454;
-        transition: background-color 0.3s ease;
-    }
-
-        .transparent-input:focus {
-            background-color: rgba(255, 255, 255, 0.1);
-            color: #FCB454;
-            outline: none;
-            box-shadow: none;
-            border-color: #FFF8E7;
-        }
-
-        .transparent-input::placeholder {
-            color: #FCB454;
-        }
-
-    .row {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .shadow-sm {
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .form-group {
-        margin-bottom: 15px;
-    }
-
-    a {
-        text-decoration: none;
-    }
-
-        a:hover {
-            color: #FCB454;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-        }
 
     .form-container {
-        max-width: 600px;
-        padding: 20px;
+        background-color: rgba(0, 0, 0, 0.7);
+        border-radius: 15px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
     }
 
-</style>
+    .styled-input {
+        background-color: rgba(255, 255, 255, 0.1);
+        border: 1px solid #FFC107;
+        color: #fff;
+    }
 
+        .styled-input::placeholder {
+            color: #aaa;
+        }
+
+        .styled-input:focus {
+            background-color: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            box-shadow: none;
+            border-color: #FFEB3B;
+        }
+
+    label {
+        font-weight: bold;
+        color: #eee;
+    }
+
+    .form-section {
+        min-height: 100vh;
+    }
+</style>

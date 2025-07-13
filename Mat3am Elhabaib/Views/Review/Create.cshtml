@@ -1,53 +1,88 @@
 ﻿@model Review
-@{
-    // ViewData["Title"] = "Create";
-}
 
+<section class="review-section py-5 mt-5">
 
+    <div class="container">
+        <div class="review-card p-4 rounded shadow">
+            <h2 class="text-center text-light mb-4">
+                Review Us <i class="bi bi-star-fill text-warning"></i>
+            </h2>
 
-<section id="book-a-table" class="book-a-table section">
+            <form asp-action="Create" asp-controller="Review">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-    <!-- Section Title -->
-    <div class="container section-title" data-aos="fade-up">
-        <h2>Review Us.. </h2>
-        @*                 <p>Book a Table</p>
-        *@
-    </div><!-- End Section Title -->
+                <div class="row gy-4">
+                    <div class="col-lg-4 col-md-6">
+                        <label asp-for="@Model.Rate" class="form-label text-light">Rating</label>
+                        <select asp-for="@Model.Rate" class="form-control review-input">
+                            <option value="" disabled selected>Select Rate</option>
+                            <option value="1">★☆☆☆☆ (1)</option>
+                            <option value="2">★★☆☆☆ (2)</option>
+                            <option value="3">★★★☆☆ (3)</option>
+                            <option value="4">★★★★☆ (4)</option>
+                            <option value="5">★★★★★ (5)</option>
+                        </select>
+                        <span asp-validation-for="@Model.Rate" class="text-danger small"></span>
+                    </div>
 
-    <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-        <form asp-action="Create" asp-controller="Review">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-            <div class="row gy-4">
-                <div class="col-lg-4 col-md-6">
-                    <label asp-for="@Model.Rate" class="control-label "></label>
-                    <select asp-for="@Model.Rate" class="form-control" style="color: #674636; background-color: #F7EFE5;">
-                        <option value="" disabled selected>Select Rate</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        
-                    </select>
-                    <span asp-validation-for="@Model.Rate" class="text-bg-danger"></span>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <label asp-for="@Model.Comment" class="control-label"> Comment :  </label>
-                    <textarea asp-for="@Model.Comment" class="form-control" placeholder="Write An Review..."></textarea>
-                    <span asp-validation-for="@Model.Comment" class="text-bg-danger"></span>
+                    <div class="col-lg-8 col-md-6">
+                        <label asp-for="@Model.Comment" class="form-label text-light">Comment</label>
+                        <textarea asp-for="@Model.Comment" class="form-control review-input" rows="4" placeholder="Write your review..."></textarea>
+                        <span asp-validation-for="@Model.Comment" class="text-danger small"></span>
+                    </div>
                 </div>
 
-            </div>
-
-
-            <div class="text-center mt-3">
-                <input class="btn btn-success" type="submit" value="Create" />
-
-            </div>
-        </form><!-- End Reservation Form -->
-
+                <div class="text-center mt-4">
+                    <input class="btn btn-warning text-dark fw-semibold px-4 py-2 rounded-pill shadow" type="submit" value="Submit Review" />
+                </div>
+            </form>
+        </div>
     </div>
 
 </section>
+
+<style>
+    body {
+        background-color: #222222;
+        padding-top: 90px; /* علشان تظهر تحت الـ navbar */
+    }
+
+    .review-section {
+        background-color: #181C14;
+    }
+
+    .review-card {
+        background-color: rgba(255, 255, 255, 0.05);
+        border: 1px solid #F5C45E;
+        color: #FFF8E7;
+    }
+
+    .review-input {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: #F5C45E;
+        border: 1px solid #F5C45E;
+        transition: 0.3s;
+    }
+
+        .review-input:focus {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-color: #FFF8E7;
+            color: #FFF8E7;
+            box-shadow: none;
+        }
+
+    .form-label {
+        font-weight: 600;
+        color: #F7EFE5;
+    }
+
+    ::placeholder {
+        color: #F5C45E;
+    }
+
+    select option {
+        background-color: #222;
+        color: #F5C45E;
+    }
+
+</style>

@@ -1,190 +1,120 @@
 ﻿@using Mat3am_Elhabaib.DataBase.ModelVM
 @model ShoppingCartVm
 @{
-    ViewData["Title"] = "ShopingCart";
+    ViewData["Title"] = "ShoppingCart";
 }
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-@* <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> *@
-
 
 <div class="order-container">
-    <p class="text-brown text-center" style="font-family: 'Times New Roman', serif; font-size: 30px; color: #F5C45E;">
-        <b>Your Cart</b>       <i class="bi bi-cart" style="font-size:20px;"></i>
-    </p>
-    @if (Model == null || @Model.ShoppingCart.ShopingItems == null || Model.ShoppingCart.ShopingItems.Count == 0)
+    <h2 class="text-center mb-4 text-warning fw-bold">
+        Your Cart <i class="bi bi-cart" style="font-size: 24px;"></i>
+    </h2>
+
+    @if (Model == null || Model.ShoppingCart.ShopingItems == null || !Model.ShoppingCart.ShopingItems.Any())
     {
-        <p style="color: #F5C45E">You Cart Is Still Empty ! </p>
+        <p class="text-center text-warning fs-5">Your cart is still empty!</p>
     }
     else
     {
         <input asp-for="ShoppingCart.ShopingCartId" hidden />
-        <table class="base-table ">
-            <thead>
-                <tr>
-                    <th class="Customer-Items">
-                        Order Items <i class='fas fa-cart-arrow-down'></i> :
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
+        <div class="table-responsive">
+            <table class="table table-dark table-bordered align-middle text-center shadow-sm">
+                <thead class="table-warning text-dark">
+                    <tr>
+                        <th>Payment</th>
+                        <th>Product</th>
+                        <th>Unit Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                        <th>Remove</th>
+                        <th>Add</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.ShoppingCart.ShopingItems)
+                    {
+                        <tr>
+                            <td>Cash On Delivery</td>
+                            <td>@item.ShoppingCartItems.Name</td>
+                            <td>@item.ShoppingCartItems.Price.ToString("C")</td>
+                            <td>@item.Amount</td>
+                            <td>@(item.Amount * item.ShoppingCartItems.Price) $</td>
+                            <td>
+                                <a class="btn btn-sm btn-outline-danger" asp-controller="Orders" asp-action="RemoveItemFromShoppingCart" asp-route-id="@item.ShoppingCartItems.Id">
+                                    <i class="bi bi-cart-dash"></i>
+                                </a>
+                            </td>
+                            <td>
+                                <a class="btn btn-sm btn-outline-success" asp-controller="Orders" asp-action="AddItemToShoppingCart" asp-route-id="@item.ShoppingCartItems.Id">
+                                    <i class="bi bi-cart-plus"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
 
-                    <td>
-                        <table class="nested-table">
-                            <thead>
-                                <tr>
-                                    <th>Payment Method</th>
-                                    <th>Prodcut Name :</th>
-                                    <th> Unit Price <i class='fas fa-dollar-sign'></i> :</th>
-                                    <th> Quantity :</th>
-                                    <th> Total Price <i class='fas fa-dollar-sign'></i>  :</th>
-                                    <th>Delete Item  <span class="glyphicon glyphicon-trash"></span> </th>
-                                    <th> Add Item  <i class="bi bi-cart-plus"></i></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var Items in Model.ShoppingCart.ShopingItems)
-                                {
-                                    <tr>
-                                        <td>Cash On delevery</td>
-                                        <td>
-                                            @Items.ShoppingCartItems.Name                                       </td>
-                                        <td>
-                                            @Items.ShoppingCartItems.Price <i class='fas fa-dollar-sign'></i>
-                                        </td>
-                                        <td>
-                                            @Items.Amount
-                                        </td>
-                                        <td>
-                                            @((Items.Amount * Items.ShoppingCartItems.Price).ToString("c")) <i class='fas fa-dollar-sign'></i>
-                                        </td>
-                                        <td>
-                                            <a class="button1 w-100" asp-controller="Orders" asp-action="RemoveItemFromShoppingCart"
-                                               asp-route-id="@Items.ShoppingCartItems.Id">
-                                                <i class="bi bi-cart-dash"></i>
-                                            </a>
-                                        </td>
-                                        <td>
-                                            <a class="button1 w-100" asp-controller="Orders" asp-action="AddItemToShoppingCart"
-                                               asp-route-id="@Items.ShoppingCartItems.Id">
-                                                <i class="bi bi-cart-plus"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </td>
-
-                </tr>
-
-            </tbody>
-        </table>
-        <center>
-            <button class="btn btn-success" onclick="window.location.href='@Url.Action("CompleteOrder", "Orders")'"> Complelte Order </button>
-            <button class="btn btn-success" onclick="window.location.href='@Url.Action("Index", "Menu")'"> Add Items   </button>
-        </center>
+        <div class="text-center mt-4 d-flex justify-content-center gap-3">
+            <a class="btn btn-success fw-bold px-4" href="@Url.Action("CompleteOrder", "Orders")">
+                Complete Order <i class="bi bi-check-circle ms-1"></i>
+            </a>
+            <a class="btn btn-warning fw-bold text-dark px-4" href="@Url.Action("Index", "Menu")">
+                Add More Items <i class="bi bi-plus-circle ms-1"></i>
+            </a>
+        </div>
     }
 </div>
-
 
 <style>
     body {
         background-color: #222222;
         padding-top: 70px;
+        font-family: 'Segoe UI', sans-serif;
     }
 
     .order-container {
         max-width: 100%;
-        background-color: #222222;
+        background-color: #1a1a1a;
         margin: 50px auto;
-        background: #222222;
-        padding: 20px;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0px 0px 15px rgba(255, 215, 0, 0.1);
     }
 
-    .base-table {
-        width: 100%;
-        border-color: #674636;
+    table {
+        border-collapse: collapse;
     }
 
-        .base-table th, .base-table td {
-            border: 1px solid #FFFDF6;
-            background-color: #F5C45E;
-            padding: 10px;
-            text-align: left;
-            color: #674636;
-            text-align: center;
-        }
-
-        .base-table td {
-            border: 1px solid #FFFDF6;
-            background-color: #181C14;
-            color: #FDFAF6;
-            padding: 10px;
-            text-align: left;
-        }
-
-    .nested-table {
-        width: 100%;
-        border-color: #674636;
-        border-radius: 60px;
+    .table th, .table td {
+        vertical-align: middle;
     }
 
-        .nested-table th .nested-table td {
-            border: 1px solid #ccc;
-            background-color: #F7EFE5;
-            border-radius: 60px;
-            padding: 10px;
-            text-align: left;
-            color: #674636;
-        }
-
-        .nested-table td {
-            border: 1px solid #ccc;
-            background-color: #FCFAEE;
-            color: #000000;
-            padding: 10px;
-            text-align: left;
-        }
-
-    .link {
-        color: #674636;
-        text-decoration: none;
-        padding-left: 35px;
-        box-shadow: none;
-        text-align: center;
+    .table th {
+        background-color: #F5C45E !important;
     }
 
-        .link:hover {
-            text-decoration: none;
-            color: #674636;
-            text-decoration: none;
-            box-shadow: none;
-        }
-
-    /* Button styling */
-    .button1 {
-        border: 1px solid #ccc;
-        background-color: #F7EFE5;
-        padding: 10px 20px;
-        text-align: center;
-        color: #674636;
-        display: inline-block;
-        font-weight: bold;
+    .table-dark td {
+        background-color: #181C14 !important;
+        color: #FFF8E7 !important;
     }
 
-        .button1:hover {
-            box-shadow: 0 6px 8px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
-            transition: all 0.3s ease;
-            text-decoration: none;
-        }
-
-    .button-container {
-        text-align: center;
-        margin-top: 20px;
+    .btn-outline-danger:hover {
+        background-color: #dc3545;
+        color: #fff;
     }
 
+    .btn-outline-success:hover {
+        background-color: #198754;
+        color: #fff;
+    }
+
+    .btn-warning:hover {
+        opacity: 0.9;
+    }
+
+    .text-warning {
+        color: #F5C45E !important;
+    }
 </style>

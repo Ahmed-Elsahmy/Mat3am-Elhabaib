@@ -6,18 +6,22 @@ namespace Mat3am_Elhabaib.DataBase.ModelVM
 {
     public class EditItemVm
     {
-        [Key]
         public int Id { get; set; }
+
         [Required(ErrorMessage = "Please add a name for an item")]
         public string Name { get; set; }
+
         [Required(ErrorMessage = "Please add a description for an item")]
         public string Description { get; set; }
-        [DataType(DataType.Url)]
-        public string Imageurl { get; set; }
+
+        public List<string> Images { get; set; }
+
         [Required(ErrorMessage = "Please add a price for an item")]
         public decimal Price { get; set; }
+
+        [Required(ErrorMessage = "Please select a category")]
         public int CategoryId { get; set; }
-        [ForeignKey(nameof(CategoryId))]
-        public Category category { get; set; }
+        //[ForeignKey(nameof(CategoryId))]
+        //public Category category { get; set; }
     }
 }

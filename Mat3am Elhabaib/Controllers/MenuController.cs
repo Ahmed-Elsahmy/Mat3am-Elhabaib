@@ -33,5 +33,22 @@ namespace Mat3am_Elhabaib.Controllers
             var items = await _itemsService.GetAll(); // أو أي طريقة تجيب كل الـ Items
             return PartialView("_ItemsPartial", items);
         }
+        [HttpGet]
+        public async Task<IActionResult> Search(string searchTarget)
+        {
+            var AllItems = await _itemsService.GetAll();
+            var SearchResult = AllItems.Where(i => i.Name.Contains(searchTarget, StringComparison.OrdinalIgnoreCase) ||
+            i.Description.Contains(searchTarget, StringComparison.OrdinalIgnoreCase)).ToList();
+            // search an item with name or description
+            if (string.IsNullOrWhiteSpace(searchTarget))
+            {
+                return PartialView("_ItemsPartial", AllItems);
+
+            }
+            else
+            {
+                return PartialView("_ItemsPartial", SearchResult);
+            }
+        }
     }
 }

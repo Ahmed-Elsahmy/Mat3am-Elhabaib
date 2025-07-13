@@ -1,61 +1,91 @@
 ﻿@model Reservations
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create Reservation";
 }
 
-
-<section id="book-a-table" class="book-a-table section">
-
-    <!-- Section Title -->
-    <div class="container section-title" data-aos="fade-up">
-        <h2>Book A Table. </h2>
-        @*                 <p>Book a Table</p>
-        *@
-    </div><!-- End Section Title -->
-
-    <div class="container" data-aos="fade-up" data-aos-delay="100">
+<section class="reservation-section">
+    <div class="container reservation-card">
+        <h2 class="text-warning text-center mb-4" style="font-family: 'Times New Roman', serif;">
+            <i class="bi bi-calendar-plus me-2"></i> Book a Table
+        </h2>
 
         <form asp-action="Create" asp-controller="Reservation">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-            <div class="row gy-4">
-                <div class="col-lg-4 col-md-6">
-                    <label asp-for="@Model.NumberOftables" class="control-label "> Number Of Tables</label>
-                    <select asp-for="@Model.NumberOftables" class="form-control" style="color: #674636; background-color: #F7EFE5;">
-                        <option value="" disabled selected>Select Number Of Tabels</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <label asp-for="NumberOftables" class="form-label text-light">Number of Tables</label>
+                    <select asp-for="NumberOftables" class="form-control rounded shadow-sm"
+                            style="background-color: #F7EFE5; color: #674636;">
+                        <option value="" disabled selected>Select Number of Tables</option>
+                        @for (int i = 1; i <= 10; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
                     </select>
-                    <span asp-validation-for="@Model.NumberOftables" class="text-bg-danger"></span>
+                    <span asp-validation-for="NumberOftables" class="text-danger small"></span>
                 </div>
-                <div class="col-lg-4 col-md-6">
-                    <label asp-for="@Model.time" class="control-label"> Time And Date :  </label>
-                    <input asp-for="@Model.time" type="datetime-local" class="form-control" min="@DateTime.Now.ToString("yyyy-MM-dd")" value="@Model.time.ToString("yyyy-MM-ddTHH:mm")" />
-                    <span asp-validation-for="@Model.time" class="text-bg-danger"></span>
+
+                <div class="col-md-4">
+                    <label asp-for="time" class="form-label text-light">Time & Date</label>
+                    <input asp-for="time" type="datetime-local"
+                           class="form-control rounded shadow-sm"
+                           min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")"
+                           value="@Model.time.ToString("yyyy-MM-ddTHH:mm")" />
+                    <span asp-validation-for="time" class="text-danger small"></span>
                 </div>
-                <div class="col-lg-4 col-md-6">
-                    <label asp-for="@Model.PhoneNumber" class="control-label"> Phone Number  :  </label>
-                    <input asp-for="@Model.PhoneNumber" class="form-control"placeholder="Please Your Phone Number .." />
-                    <span asp-validation-for="@Model.PhoneNumber" class="text-bg-danger"></span>
+
+                <div class="col-md-4">
+                    <label asp-for="PhoneNumber" class="form-label text-light">Phone Number</label>
+                    <input asp-for="PhoneNumber" class="form-control rounded shadow-sm" placeholder="Enter your phone number..." />
+                    <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
                 </div>
             </div>
 
-
-            <div class="text-center mt-3">
-                <input class="btn btn-success" type="submit" value="Create" />
-
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-warning text-dark fw-semibold px-4 py-2 rounded-pill shadow">
+                    <i class="bi bi-check-circle me-1"></i> Confirm Reservation
+                </button>
             </div>
-        </form><!-- End Reservation Form -->
-
+        </form>
     </div>
-
 </section>
+
+<style>
+    body {
+        background-color: #222222;
+        padding-top: 90px; /* 👈 Space below navbar */
+    }
+
+    .reservation-section {
+        padding: 40px 0;
+    }
+
+    .reservation-card {
+        background-color: #181C14;
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
+        max-width: 1000px;
+        margin: auto;
+    }
+
+    .form-label {
+        font-weight: 600;
+        font-size: 16px;
+    }
+
+    .form-control:focus {
+        box-shadow: 0 0 0 0.2rem rgba(245, 196, 94, 0.5);
+        border-color: #F5C45E;
+    }
+
+    .btn-warning:hover {
+        background-color: #e0ac3c;
+        color: #222;
+    }
+
+    .text-warning {
+        color: #F5C45E !important;
+    }
+</style>

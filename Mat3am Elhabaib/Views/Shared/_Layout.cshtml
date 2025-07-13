@@ -42,53 +42,48 @@
 
 <body class="index-page">
 
-    <header id="header" class="header fixed-top">
+    <header id="header" class="header fixed-top bg-dark shadow-sm">
+        <div class="container d-flex align-items-center justify-content-between flex-nowrap py-2">
 
-        <div class="branding d-flex align-items-cente">
+            <!-- Logo -->
+            <a asp-controller="Home" asp-action="Index" class="logo d-flex align-items-center text-decoration-none">
+                <h1 class="sitename text-warning m-0 fw-bold" style="font-size: 1.8rem;">Mat3am Elhabaib</h1>
+            </a>
 
-            <div class="container position-relative d-flex align-items-center justify-content-between">
-                <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
-                    <!-- Uncomment the line below if you also wish to use an image logo -->
-                    <!-- <img src="~/assets/img/logo.png" alt=""> -->
-                    <h1 class="sitename">Mat3am Elabaib</h1>
-                </a>
+            <!-- Navigation -->
+            <nav id="navmenu" class="navmenu d-flex align-items-center">
+                <ul class="nav list-unstyled m-0 d-flex flex-nowrap align-items-center gap-2">
+                    <li><a asp-controller="Home" asp-action="Index" class="nav-link text-white">Home</a></li>
+                    <li><a asp-controller="Menu" asp-action="Index" class="nav-link text-white">Menu</a></li>
+                    <li><a asp-controller="Review" asp-action="Index" class="nav-link text-white">Reviews</a></li>
+                    <li><a asp-controller="Reservation" asp-action="Index" class="nav-link text-white">Reservations</a></li>
+                    <li><a asp-controller="Orders" asp-action="Index" class="nav-link text-white">Orders</a></li>
 
-                <nav id="navmenu" class="navmenu">
-                    <ul>
-                        <li><a asp-controller="Home" asp-action="Index" >Home<br></a></li>
-                        <li><a asp-controller="Menu" asp-action="Index" >Menu</a></li>
-                        <li><a asp-controller="Review" asp-action="Index">Reviews</a></li>
-                        <li><a asp-controller="Reservation" asp-action="Index" >Reservations</a></li>
+                    @if (User.Identity.IsAuthenticated)
+                    {
                         <li>
-                            <a asp-controller="Orders" asp-action="Index" >Orders</a>
+                            <a asp-controller="Orders" asp-action="ShopingCart" class="nav-link text-warning">
+                                <i class="bi bi-cart" style="font-size: 20px;"></i>
+                            </a>
                         </li>
-                        @if (User.Identity.IsAuthenticated && User.IsInRole("User"))
-                        {
-                            <li>
-                                <a asp-controller="Orders" asp-action="ShopingCart">
-                                    <i class="bi bi-cart" style="font-size:20px;"></i>
-                                </a>
-                            </li>
-                        }
-                      
-                        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
-                        {
-                            <li>
-                                <a asp-controller="Category" asp-action="Index">
-Category                                </a>
-                            </li>
-                        }
-                    </ul>
+                    }
 
-                    <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-                </nav>
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                        <li>
+                            <a asp-controller="Category" asp-action="Index" class="nav-link text-white">Categories</a>
+                        </li>
+                    }
+                </ul>
+                <i class="mobile-nav-toggle d-xl-none bi bi-list text-white fs-3 ms-3"></i>
+            </nav>
 
+            <!-- Identity -->
+            <div class="ms-3">
                 <partial name="_Identity.cshtml" />
-
             </div>
 
         </div>
-
     </header>
 
     @RenderBody()

@@ -6,58 +6,66 @@
 
 
 
-<section id="book-a-table" class="book-a-table section">
+<section class="py-5 mt-5">
+    <!-- margin top to avoid overlapping navbar -->
+    <div class="container">
+        <h2 class="text-warning text-center mb-4">Edit Item</h2>
 
-    <!-- Section Title -->
-    <div class="container section-title" data-aos="fade-up">
-        <h2>Edit An Item</h2>
-        @*                 <p>Book a Table</p>
-        *@
-    </div><!-- End Section Title -->
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6 bg-black p-4 rounded shadow-sm border border-warning">
 
-    <div class="container" data-aos="fade-up" data-aos-delay="100">
+                <form asp-action="Edit" asp-controller="Items" method="post" enctype="multipart/form-data">
+                    <input type="hidden" asp-for="Id" />
 
-        <form asp-action="Edit" asp-controller="Items">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Name" class="text-white">Item Name:</label>
+                        <input asp-for="Name" class="form-control bg-dark text-white border-warning" />
+                        <span asp-validation-for="Name" class="text-danger small"></span>
+                    </div>
 
-            <div class="row gy-4">
-                <div class="col-lg-4 col-md-6">
-                    <label asp-for="Name" class="control-label"> Item Name :  </label>
-                    <input type="text" asp-for="Name" class="form-control" placeholder="Category Name..." required="">
-                    <span asp-validation-for="Name" class="text-bg-danger"></span>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <label asp-for="Description" class="control-label"> Item Description :  </label>
-                    <textarea asp-for="Description" class="form-control" placeholder="Description..." required=""></textarea>
-                    <span asp-validation-for="Description" class="text-bg-danger"></span>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <label asp-for="Imageurl" class="control-label"> Image :  </label>
-                    <input asp-for="Imageurl" class="form-control" placeholder="Image..." required="">
-                    <span asp-validation-for="Imageurl" class="text-bg-danger"></span>
-                </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Description" class="text-white">Description:</label>
+                        <textarea asp-for="Description" rows="3" class="form-control bg-dark text-white border-warning"></textarea>
+                        <span asp-validation-for="Description" class="text-danger small"></span>
+                    </div>
 
-                <div class="col-lg-4 col-md-6">
-                    <label asp-for="Price" class="control-label"> Price $ :  </label>
-                    <input asp-for="Price" class="form-control" placeholder="Price $..." required="">
-                    <span asp-validation-for="Price" class="text-bg-danger"></span>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <label asp-for="CategoryId" class="control-label">Category</label>
-                    <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.Category"></select>
-                    <span asp-validation-for="CategoryId" class="text-danger"></span>
-                </div>
+                    <div class="form-group mb-3">
+                        <label class="text-white">Upload New Images:</label>
+                        <input type="file" name="images" multiple class="form-control bg-dark text-white border-warning" />
+                        <small class="text-white-50">You can upload multiple images.</small>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Price" class="text-white">Price:</label>
+                        <input asp-for="Price" class="form-control bg-dark text-white border-warning" />
+                        <span asp-validation-for="Price" class="text-danger small"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="CategoryId" class="text-white">Category:</label>
+                        <select asp-for="CategoryId" asp-items="ViewBag.Category" class="form-control bg-dark text-white border-warning"></select>
+                        <span asp-validation-for="CategoryId" class="text-danger small"></span>
+                    </div>
+
+                    <div class="form-group text-center">
+                        <button type="submit" class="btn btn-warning text-dark px-4">Save Changes</button>
+                    </div>
+                </form>
+
+                <!-- Display old images if exist -->
+                @if (Model.Images != null && Model.Images.Any())
+                {
+                    <div class="row mt-4">
+                        @foreach (var img in Model.Images)
+                        {
+                            <div class="col-6 col-md-4 mb-2">
+                                <img src="~/ImgItem/Profile/@img" class="img-thumbnail border border-warning" style="max-height: 120px;" />
+                            </div>
+                        }
+                    </div>
+                }
 
             </div>
-
-
-            <div class="text-center mt-3">
-                <input class="btn-book-a-table d-none d-xl-block" type="submit" value="Create" />
-
-            </div>
-        </form><!-- End Reservation Form -->
-
+        </div>
     </div>
-
 </section>
-

@@ -2,17 +2,49 @@
 
     <img src="~/assets/img/hero-bg.jpg" alt="" data-aos="fade-in">
 
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 d-flex flex-column align-items-center align-items-lg-start">
-                <h2 data-aos="fade-up" data-aos-delay="100">Welcome to <span>Mata3m Elhabaib </span></h2>
-                <p data-aos="fade-up" data-aos-delay="200">Bite into Happiness!</p>
-                <div class="d-flex mt-4" data-aos="fade-up" data-aos-delay="300">
-                    <a asp-action="Index" asp-controller="Menu" class="cta-btn">Our Menu</a>
-                    <a asp-action="Create" asp-controller="Reservation" class="cta-btn">Book a Table</a>
+    <div class="container py-5">
+        <div class="row align-items-center">
+            <div class="col-lg-8 d-flex flex-column align-items-center align-items-lg-start text-center text-lg-start">
+                <h2 data-aos="fade-up" data-aos-delay="100" class="fw-bold display-4" style="color: #ffcc00;">
+                    Welcome to <span class="text-white">Mata3m Elhabaib</span>
+                </h2>
+                <p data-aos="fade-up" data-aos-delay="200" class="fs-5 mt-3 mb-4 text-light">
+                    Bite into Happiness!
+                </p>
+                <div class="d-flex gap-3 flex-wrap justify-content-center justify-content-lg-start" data-aos="fade-up" data-aos-delay="300">
+                    <a asp-action="Index" asp-controller="Menu" class="btn btn-warning px-4 py-2 fw-bold shadow-sm">
+                        <i class="bi bi-list"></i> Our Menu
+                    </a>
+                    <a asp-action="Create" asp-controller="Reservation" class="btn btn-outline-light px-4 py-2 fw-bold shadow-sm">
+                        <i class="bi bi-calendar-check"></i> Book a Table
+                    </a>
                 </div>
             </div>
         </div>
     </div>
 
 </section>
+<div style="height: 80px;"></div>
+<style>
+    .hero {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+  
+
+    .btn-warning:hover {
+        background-color: #e6b800;
+        color: #000;
+    }
+
+    .btn-outline-light:hover {
+        background-color: #fff;
+        color: #000;
+    }
+
+</style>

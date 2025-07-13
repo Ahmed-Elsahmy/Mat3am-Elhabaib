@@ -3,86 +3,142 @@
     var categories = ViewBag.Categories as List<Category>;
 }
 
-<div class="container my-5">
-    <div class="section-title text-center mb-4">
-        <small style="margin-top: 3rem; display: inline-block; color: #FFFDF6; letter-spacing: 2px; border-bottom: 2px solid #d9a74d;">MENU</small>
-        <h2 class="text-warning mt-2" style="font-weight: bold;">Check Our Tasty Menu</h2>
+<div class="container py-5 mt-5">
+    <div class="section-title text-center mb-5">
+        <small class="text-uppercase" style="color: #FFFDF6; letter-spacing: 2px; border-bottom: 2px solid #d9a74d;">MENU</small>
+        <h2 class="text-warning fw-bold mt-2">Check Our Tasty Menu</h2>
         @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
         {
-            <div class="text-white" style="">
-                <a asp-controller="Items" asp-action="Create" class="btn btn-success" style="border:1px solid white;border-radius:30px;"><i class="bi bi-plus-circle"></i> Add New </a>
+            <div class="mt-3">
+                <a asp-controller="Items" asp-action="Create" class="btn btn-success px-4 py-2 rounded-pill fw-bold shadow-sm">
+                    <i class="bi bi-plus-circle me-1"></i> Add New
+                </a>
             </div>
         }
+    </div>
+
+    <div class="input-group mb-5 custom-search">
+        <input type="text" id="searchBox" class="form-control custom-input" placeholder="Search items...">
+        <button class="btn custom-button" type="button" id="searchBtn">Search</button>
     </div>
 
     <!-- Filter Buttons -->
     <div class="d-flex justify-content-center mb-5 flex-wrap menu-filters">
         <button class="menu-btn active" onclick="loadItems(0)">All</button>
-
         @foreach (var cat in categories)
         {
-            <button class="menu-btn" onclick="loadItems(@(cat.Id))">
-                @cat.Name
-            </button>
+            <button class="menu-btn" onclick="loadItems(@cat.Id)">@cat.Name</button>
         }
     </div>
 
     <!-- Items Display -->
-    <div id="itemsContainer">
+    <div id="itemsContainer" class="row g-4">
         @await Html.PartialAsync("_ItemsPartial", Model)
     </div>
 </div>
 
 <!-- Custom Styling -->
 <style>
-    .menu-btn {
-        background: none;
-        border: none;
-        margin: 0 10px;
-        padding: 5px 10px;
-        color: #ccc;
-        font-size: 16px;
-        transition: color 0.3s, border-bottom 0.3s;
-        border-bottom: 2px solid transparent;
-    }
-
-    .menu-btn:hover,
-    .menu-btn.active {
-        color: #d9a74d; /* الذهبي */
-        border-bottom: 2px solid #d9a74d;
-    }
-
-    .section-title small {
-        display: inline-block;
-        color: #aaa;
-        border-color: #d9a74d;
+    body {
+        background-color: #111;
+        color: #fff;
     }
 
     .section-title h2 {
         color: #d9a74d;
     }
 
-    body {
-        background-color: #111; /* لون الخلفية الداكن */
-        color: #fff;
+    .menu-btn {
+        background: none;
+        border: none;
+        margin: 0 10px 10px;
+        padding: 8px 16px;
+        color: #ccc;
+        font-size: 16px;
+        transition: color 0.3s, border-bottom 0.3s;
+        border-bottom: 2px solid transparent;
+        border-radius: 5px;
     }
+
+        .menu-btn:hover,
+        .menu-btn.active {
+            color: #d9a74d;
+            border-bottom: 2px solid #d9a74d;
+        }
+
+    .custom-search {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .custom-input {
+        background-color: #1c1c1c;
+        color: #fff;
+        border: 1px solid #ffc107;
+    }
+
+        .custom-input::placeholder {
+            color: #ccc;
+        }
+
+        .custom-input:focus {
+            background-color: #1c1c1c;
+            color: #fff;
+            border-color: #ffcc00;
+            box-shadow: none;
+        }
+
+    .custom-button {
+        background-color: #ffcc00;
+        color: #000;
+        border: none;
+    }
+
+        .custom-button:hover {
+            background-color: #e6b800;
+            color: #000;
+        }
 </style>
 
 @section Scripts {
     <script>
         function loadItems(categoryId) {
             let url = categoryId === 0
-        ? '@Url.Action("GetAllItemsPartial", "Menu")'
-        : '@Url.Action("FilterItems", "Menu")' + '?categoryId=' + categoryId;
+                        ? '@Url.Action("GetAllItemsPartial", "Menu")'
+                        : '@Url.Action("FilterItems", "Menu")' + '?categoryId=' + categoryId;
 
             fetch(url)
                 .then(res => res.text())
                 .then(html => {
                     document.getElementById("itemsContainer").innerHTML = html;
-                    // Update active class
                     document.querySelectorAll('.menu-btn').forEach(btn => btn.classList.remove('active'));
                     event.target.classList.add('active');
-                });
-        }
+                        });
+                }
     </script>
 }
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+        function searchItems() {
+        var query = $('#searchBox').val();
+
+            $.ajax({
+            url: '/Menu/Search',
+            type: 'GET',
+            data: { searchTarget: query },
+            success: function (result) {
+                $('#itemsContainer').html(result);
+                },
+            });
+        }
+
+        $('#searchBtn').on('click', function () {
+        searchItems();
+    });
+
+    $('#searchBox').on('keypress', function (e) {
+            if (e.which === 13) {
+            searchItems();
+        }
+        });
+</script>

@@ -1,39 +1,59 @@
 ﻿@model Category
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create Category";
 }
 
+<!-- Space under navbar -->
+<div style="height: 80px;"></div>
 
-<section id="book-a-table" class="book-a-table section">
+<section class="create-category-section py-5">
+    <div class="container">
+        <div class="section-title text-center mb-5" data-aos="fade-up">
+            <h2 class="text-warning fw-bold">Create New Category</h2>
+        </div>
 
-    <!-- Section Title -->
-    <div class="container section-title" data-aos="fade-up">
-        <h2>Create New Category</h2>
-        @*                 <p>Book a Table</p>
-        *@
-    </div><!-- End Section Title -->
+        <div class="row justify-content-center" data-aos="fade-up" data-aos-delay="100">
+            <div class="col-lg-6">
+                <form asp-action="Create" asp-controller="Category" class="bg-dark p-4 rounded shadow-sm">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-    <div class="container" data-aos="fade-up" data-aos-delay="100">
+                    <div class="mb-3">
+                        <label asp-for="Name" class="form-label text-white">Category Name</label>
+                        <input asp-for="Name" class="form-control bg-dark text-white border-warning" placeholder="Enter category name..." />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
 
-        <form asp-action="Create" asp-controller="Category">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-            <div class="row gy-4">
-                <div class="col-lg-4 col-md-6">
-                    <label asp-for="Name" class="control-label"> Category Name :  </label>
-                    <input type="text" asp-for="Name" class="form-control" placeholder="Category Name..." required="">
-                    <span asp-validation-for="Name" class="text-bg-danger"></span>
-                </div>
-                
+                    <div class="text-center mt-4">
+                        <input type="submit" value="Create" class="btn btn-warning px-5 fw-bold" />
+                    </div>
+                </form>
             </div>
-
-
-            <div class="text-center mt-3">
-                <input class="btn-book-a-table d-none d-xl-block" type="submit" value="Create" />
-
-            </div>
-        </form><!-- End Reservation Form -->
-
+        </div>
     </div>
-
 </section>
+
+<style>
+    body {
+        background-color: #1b1b1b;
+    }
+
+    .create-category-section {
+        color: #fff;
+    }
+
+    .form-control:focus {
+        border-color: #f5c045;
+        box-shadow: 0 0 0 0.2rem rgba(245, 192, 69, 0.25);
+        background-color: #1c1c1c;
+        color: white;
+    }
+
+    .btn-warning:hover {
+        background-color: #e4b032;
+        color: black;
+    }
+
+    .form-control::placeholder {
+        color: #aaa;
+    }
+</style>

@@ -4,44 +4,77 @@
     @foreach (var item in Model)
     {
         <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100 bg-dark text-white border-0 shadow-lg rounded-4">
-                <img src="@item.Imageurl" class="card-img-top rounded-top-4" alt="@item.Name"
-                     style="height: 150px; object-fit: cover;">
+            <div class="card h-100 bg-dark text-white border-0 shadow-lg rounded-4 overflow-hidden">
+                <!-- Carousel -->
+                <div id="carousel-@item.Id" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner" style="height: 250px;">
+                        @if (item.Images != null && item.Images.Count > 0)
+                        {
+                            var first = true;
+                            foreach (var image in item.Images)
+                            {
+                                <div class="carousel-item @(first ? "active" : "")">
+                                    <img src="~/ImgItem/Profile/@image" class="d-block w-100 rounded-top-4" alt="@item.Name" style="height: 250px; object-fit: cover;">
+                                </div>
+                                first = false;
+                            }
+                        }
+                        else
+                        {
+                            <div class="carousel-item active">
+                                <img src="/images/default.png" class="d-block w-100 rounded-top-4" alt="No image" style="height: 250px; object-fit: cover;">
+                            </div>
+                        }
+                    </div>
 
+                    @* Carousel Controls *@
+                    @if (item.Images != null && item.Images.Count > 1)
+                    {
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carousel-@item.Id" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon"></span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carousel-@item.Id" data-bs-slide="next">
+                            <span class="carousel-control-next-icon"></span>
+                        </button>
+                    }
+                </div>
+
+                <!-- Card Body -->
                 <div class="card-body d-flex flex-column">
                     <h5 class="card-title text-warning text-center fw-bold">@item.Name</h5>
-                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
-                    {
-                        <a class="text-white float-end me-2"
-                           href="@Url.Action("Edit", "Items", new { id = item.Id })">
-                            <i class="bi bi-pencil-square"></i> Edit
-                        </a>                       <form action="@Url.Action("Delete", "Items", new { id = item.Id })"
-                                                         method="post"
-                                                         style="display:inline;">
-                            @Html.AntiForgeryToken()
-                            <button type="submit"
-                                    class="btn btn-danger btn-sm ms-1"
-                                    onclick="return confirm('Are you sure?');">
-                                <i class="bi bi-trash"></i>
-                            </button>
-                        </form>
 
+                    <p class="card-text text-light mb-3" style="font-size: 0.95rem;">@item.Description</p>
 
-                    }
-                    <p class="card-text text-light-50" style="font-size: 0.9rem;">
-                        @item.Description
+                    <p class="fw-bold text-warning text-center mb-3" style="font-size: 1.1rem;">
+                        @item.Price EGP
                     </p>
 
-                    <div class="mt-auto d-flex justify-content-between align-items-center">
-                        <p class="card-text fw-bold text-warning mb-0" style="font-size: 1.1rem;">
-                            @item.Price EGP
-                        </p>
-                        <a class="btn btn-outline-warning btn-sm d-flex align-items-center" asp-controller="Orders"
-                           asp-action="AddItemToShoppingCart"
-                           asp-route-id="@item.Id">
-                            <i class="bi bi-cart me-1"></i> Order It
-                        </a>
-                    </div>
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                        <!-- Admin Buttons Centered & Bigger -->
+                        <div class="d-flex justify-content-center gap-3">
+                            <a href="@Url.Action("Edit", "Items", new { id = item.Id })" class="btn btn-outline-light btn-lg px-4">
+                                <i class="bi bi-pencil-square"></i> Edit
+                            </a>
+                            <form action="@Url.Action("Delete", "Items", new { id = item.Id })" method="post" onsubmit="return confirm('Are you sure?');">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-outline-danger btn-lg px-4">
+                                    <i class="bi bi-trash"></i> Delete
+                                </button>
+                            </form>
+                        </div>
+                    }
+                    else
+                    {
+                        <!-- User Order Button -->
+                        <div class="mt-auto text-center">
+                            <a class="btn btn-outline-warning btn-sm d-inline-flex align-items-center" asp-controller="Orders"
+                               asp-action="AddItemToShoppingCart"
+                               asp-route-id="@item.Id">
+                                <i class="bi bi-cart me-1"></i> Order It
+                            </a>
+                        </div>
+                    }
                 </div>
             </div>
         </div>

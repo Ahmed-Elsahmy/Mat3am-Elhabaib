@@ -57,7 +57,7 @@ namespace Mat3am_Elhabaib.Controllers
         }
         //Get/Edit/1
         [HttpGet]
-        [Authorize(Roles ="User")]
+        [Authorize]
         public async Task<IActionResult> Edit(int id)
         {
             var data = await _reviewService.GetbyId(id);

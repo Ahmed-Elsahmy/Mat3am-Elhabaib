@@ -1,136 +1,71 @@
 ﻿@model IEnumerable<Category>
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Categories";
 }
-
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-<div class="order-container">
-    <p class="text-brown text-center" style="font-family: 'Times New Roman', serif; font-size: 30px; color: #F5C45E;">
-        <b>Categories</b>
-        <a asp-controller="Category" asp-action="Create"class="btn btn-success" style="border:1px solid white;border-radius:30px;"><i class="bi bi-plus-circle"></i> Add New </a>
+<!-- Space below navbar -->
+<div style="height: 80px;"></div>
 
-    </p>
-  
-    
-        <table class="base-table">
-            <thead>
+<div class="container category-container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-warning fw-bold mb-0">Categories</h2>
+        <a asp-controller="Category" asp-action="Create" class="btn btn-warning text-dark fw-bold shadow-sm rounded-pill px-4">
+            <i class="bi bi-plus-circle"></i> Add New
+        </a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-bordered text-center table-dark table-hover rounded-3 overflow-hidden">
+            <thead class="table-warning text-dark">
                 <tr>
-                    <th class="Customer-Name">Name</th>
-             
-
+                    <th class="fs-5">Name</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td>@item.Name</td>
-                     
+                        <td class="text-light fs-6">@item.Name</td>
                     </tr>
                 }
             </tbody>
         </table>
-    
+    </div>
 </div>
 
 <style>
     body {
-        background-color: #222222;
-        padding-top: 70px;
+        background-color: #1b1b1b;
+        color: #fff;
     }
 
-    .order-container {
-        max-width: 100%;
-        background-color: #222222;
-        margin: 50px auto;
-        background: #222222;
-        padding: 20px;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    .category-container {
+        background-color: #222;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
     }
 
-    .base-table {
-        width: 100%;
-        border-color: #674636;
+    table.table-dark td {
+        background-color: #181c14 !important;
+        border-color: #2c2f26;
     }
 
-        .base-table th, .base-table td {
-            border: 1px solid #FFFDF6;
-            background-color: #F5C45E;
-            padding: 10px;
-            text-align: left;
-            color: #674636;
-            text-align: center;
-        }
-
-        .base-table td {
-            border: 1px solid #FFFDF6;
-            background-color: #181C14;
-            color: #FDFAF6;
-            padding: 10px;
-            text-align: left;
-        }
-
-    .nested-table {
-        width: 100%;
-        border-color: #674636;
-        border-radius: 60px;
-    }
-
-        .nested-table th .nested-table td {
-            border: 1px solid #ccc;
-            background-color: #F7EFE5;
-            border-radius: 60px;
-            padding: 10px;
-            text-align: left;
-            color: #674636;
-        }
-
-        .nested-table td {
-            border: 1px solid #ccc;
-            background-color: #FCFAEE;
-            color: #000000;
-            padding: 10px;
-            text-align: left;
-        }
-
-    .link {
-        color: #674636;
-        text-decoration: none;
-        padding-left: 35px;
-        box-shadow: none;
-        text-align: center;
-    }
-
-        .link:hover {
-            text-decoration: none;
-            color: #674636;
-            text-decoration: none;
-            box-shadow: none;
-        }
-
-    /* Button styling */
-    .button1 {
-        border: 1px solid #ccc;
-        background-color: #F7EFE5;
-        padding: 10px 20px;
-        text-align: center;
-        color: #674636;
-        display: inline-block;
+    table thead th {
         font-weight: bold;
+        letter-spacing: 1px;
     }
 
-        .button1:hover {
-            box-shadow: 0 6px 8px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
-            transition: all 0.3s ease;
-            text-decoration: none;
+    a.btn-warning {
+        background-color: #f5c045;
+        border: none;
+    }
+
+        a.btn-warning:hover {
+            background-color: #e4b032;
+            color: black;
         }
-
-    .button-container {
-        text-align: center;
-        margin-top: 20px;
-    }
-
 </style>

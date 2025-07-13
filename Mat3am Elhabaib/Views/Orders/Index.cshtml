@@ -1,224 +1,155 @@
 ﻿@model IEnumerable<Order>
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Orders";
 }
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 <div class="order-container">
-    <p class="text-brown text-center" style="font-family: 'Times New Roman', serif; font-size: 30px; color: #F5C45E;">
-        <b>Orders</b> <i class='far fa-edit'></i>
-    </p>
-    @if (Model == null || Model.Count() == 0)
+    <h2 class="text-center mb-4 text-warning fw-bold">
+        Orders <i class="far fa-edit"></i>
+    </h2>
+
+    @if (Model == null || !Model.Any())
     {
-        <p style="color: #F4F8D3">You do not have any orders yet! </p>
+        <p class="text-center text-light fs-5">You do not have any orders yet!</p>
     }
     else
     {
-        <table class="base-table">
-            <thead>
-                <tr>
-                    <th class="Customer-Name">Customer Name</th>
-                    <th class="Order-Date">Order Date <i class='fas fa-calendar-alt'></i>:</th>
-                    <th class="Order-Date">Order Items:</th>
-
-                    <th class="Customer-Location">Customer Location</th>
-                    <th class="Customer-Number">Phone Number</th>
-                    <th class="Customer-Items">Delevired <i class="bi bi-bicycle"></i> </th>
-
-                    <th class="Customer-Items">Delete Order </th>
-                    
-
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
+        <div class="table-responsive">
+            <table class="table table-dark table-bordered align-middle text-center shadow-sm">
+                <thead class="table-warning text-dark">
                     <tr>
-                        <td>@item.user.UserName</td>
-                        <td>@item.OrderDate</td>
-                        <td>
-                            <table class="nested-table">
-                                <thead>
-                                    <tr>
-                                        <th>
-                                            Item Name
-                                        </th>
-                                        <th>
-                                            Price <i class='fas fa-dollar-sign'></i>
-                                        </th>
-                                        <th>
-                                            Amount
-                                        </th>
-                                        <th>
-                                            Total Price <i class='fas fa-dollar-sign'></i>
-                                        </th>
-                                    </tr>
-                                </thead>
-                        @foreach(var oi in item.OrderItems)
-                        {
-                                   
-                                    <tbody>
-                                       <tr>
-                                           <td>
-                                               @oi.items.Name
-                                           </td>
-                                            <td>
-                                                @oi.UnitPrice
-                                            </td>
-                                            <td>
-                                                @oi.Quantity
-                                            </td>
-                                            <td>
-                                                @oi.TotalPrice
-                                            </td>
-                                       </tr>
-                                    </tbody>
-                        }
-                            </table>
-
-                        </td>
-                        <td>@item.user.Location</td>
-                        <td>@item.user.PhoneNumber</td>
-                        <td>
-                            @if (User.IsInRole("Admin"))
-                            {
-                                if (!item.Delevird)
-                                {
-                                    <a class="btn btn-primary" asp-controller="Orders" asp-action="MakeOrderDelevird"
-                                       asp-route-id="@item.Id">
-                                       Change Status
-                                        <i class="bi bi-bicycle"></i>
-                                    </a>
-                                }
-                                else
-                                {
-                                    <p class="btn btn-success">Delivered <i class="bi bi-bicycle"></i></p>
-                                }
-                            
-                            }
-                            else 
-                            {
-                                if (!item.Delevird)
-                                {
-                                    <p class="btn btn-danger">Not Yet !</p>
-                                }
-                                else
-                                {
-                                    <p class="btn btn-success">Delivered <i class="bi bi-bicycle" style="width:45px"></i></p>
-                                }
-                            }
-                        </td>
-
-                        <td>
-                            <form asp-action="DeleteOrder" method="post" asp-route-id="@item.Id">
-                                <button type="submit" class="btn btn-danger" ><i class="bi bi-trash"></i></button>
-                            </form>
-
-                        </td>
+                        <th>Customer Name</th>
+                        <th>Order Date <i class="fas fa-calendar-alt"></i></th>
+                        <th>Order Items</th>
+                        <th>Location</th>
+                        <th>Phone</th>
+                        <th>Status <i class="bi bi-bicycle"></i></th>
+                        <th>Delete</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.user.UserName</td>
+                            <td>@item.OrderDate.ToString("yyyy-MM-dd HH:mm")</td>
+                            <td>
+                                <table class="table table-sm table-bordered bg-light text-dark">
+                                    <thead class="table-secondary">
+                                        <tr>
+                                            <th>Item</th>
+                                            <th>Price</th>
+                                            <th>Qty</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var oi in item.OrderItems)
+                                        {
+                                            <tr>
+                                                <td>@oi.items.Name</td>
+                                                <td>@oi.UnitPrice</td>
+                                                <td>@oi.Quantity</td>
+                                                <td>@oi.TotalPrice</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td>@item.user.Location</td>
+                            <td>@item.user.PhoneNumber</td>
+                            <td>
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    if (!item.Delevird)
+                                    {
+                                        <a class="btn btn-sm btn-outline-warning fw-bold" asp-controller="Orders" asp-action="MakeOrderDelevird" asp-route-id="@item.Id">
+                                            Change Status <i class="bi bi-bicycle"></i>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <span class="btn btn-sm btn-success fw-bold">Delivered <i class="bi bi-bicycle"></i></span>
+                                    }
+                                }
+                                else
+                                {
+                                    if (!item.Delevird)
+                                    {
+                                        <span class="btn btn-sm btn-danger fw-bold">Not Yet!</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="btn btn-sm btn-success fw-bold">Delivered <i class="bi bi-bicycle"></i></span>
+                                    }
+                                }
+                            </td>
+                            <td>
+                                <form asp-action="DeleteOrder" method="post" asp-route-id="@item.Id" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     }
 </div>
 
 <style>
     body {
-        background-color: #222222;
-        padding-top: 70px;
+        background-color: #222;
+        padding-top: 80px;
+        font-family: 'Segoe UI', sans-serif;
     }
 
     .order-container {
-        max-width: 100%;
-        background-color: #222222;
-        margin: 50px auto;
-        background: #222222;
-        padding: 20px;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        background-color: #1a1a1a;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 0 15px rgba(255, 215, 0, 0.1);
+        max-width: 95%;
+        margin: auto;
     }
 
-    .base-table {
-        width: 100%;
-        border-color: #674636;
+    table {
+        border-collapse: collapse;
     }
 
-        .base-table th, .base-table td {
-            border: 1px solid #FFFDF6;
-            background-color: #F5C45E;
-            padding: 10px;
-            text-align: left;
-            color: #674636;
-            text-align: center;
-        }
-
-        .base-table td {
-            border: 1px solid #FFFDF6;
-            background-color: #181C14;
-            color: #FDFAF6;
-            padding: 10px;
-            text-align: left;
-        }
-
-    .nested-table {
-        width: 100%;
-        border-color: #674636;
-        border-radius: 60px;
+    .table th,
+    .table td {
+        vertical-align: middle;
     }
 
-        .nested-table th .nested-table td {
-            border: 1px solid #ccc;
-            background-color: #F7EFE5;
-            border-radius: 60px;
-            padding: 10px;
-            text-align: left;
-            color: #674636;
-        }
-
-        .nested-table td {
-            border: 1px solid #ccc;
-            background-color: #FCFAEE;
-            color: #000000;
-            padding: 10px;
-            text-align: left;
-        }
-
-    .link {
-        color: #674636;
-        text-decoration: none;
-        padding-left: 35px;
-        box-shadow: none;
-        text-align: center;
+    .table th {
+        background-color: #F5C45E !important;
     }
 
-        .link:hover {
-            text-decoration: none;
-            color: #674636;
-            text-decoration: none;
-            box-shadow: none;
-        }
-
-    /* Button styling */
-    .button1 {
-        border: 1px solid #ccc;
-        background-color: #F7EFE5;
-        padding: 10px 20px;
-        text-align: center;
-        color: #674636;
-        display: inline-block;
-        font-weight: bold;
+    .table-dark td {
+        background-color: #181C14 !important;
+        color: #FFF8E7 !important;
     }
 
-        .button1:hover {
-            box-shadow: 0 6px 8px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
-            transition: all 0.3s ease;
-            text-decoration: none;
-        }
-
-    .button-container {
-        text-align: center;
-        margin-top: 20px;
+    .table-secondary {
+        background-color: #f9f9f9 !important;
     }
 
+    .table-bordered td,
+    .table-bordered th {
+        border: 1px solid #ddd;
+    }
+
+    .btn-outline-warning:hover,
+    .btn-outline-warning:focus {
+        background-color: #F5C45E;
+        color: #000;
+        border-color: #F5C45E;
+    }
+
+    .btn-danger:hover {
+        opacity: 0.85;
+    }
 </style>
