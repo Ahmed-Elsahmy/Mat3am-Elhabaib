@@ -37,20 +37,25 @@ namespace Mat3am_Elhabaib.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegesterVM regesterVM)
         {
-            char c1 = regesterVM.PhoneNumber[0];
-            char c2 = regesterVM.PhoneNumber[1];
-            if (c1 != '0' || c2 != '1')
-            {
-                ModelState.AddModelError("", "Phone Number Is Invailid");
-                return View(regesterVM);
-             }
+           
             if (ModelState.IsValid)
             {
                 User user = new User();
                 user.UserName = regesterVM.UserName;
                 user.Email = regesterVM.Email;
                 user.PasswordHash = regesterVM.Password;
-                user.PhoneNumber = regesterVM.PhoneNumber;
+                char c1 = regesterVM.PhoneNumber[0];
+                char c2 = regesterVM.PhoneNumber[1];
+                if (c1 != '0' || c2 != '1')
+                {
+                    ModelState.AddModelError("", "Phone Number Is Invailid");
+                    return View(regesterVM);
+                }
+                else
+                {
+                    user.PhoneNumber = regesterVM.PhoneNumber;
+
+                }
                 user.Location = regesterVM.Location;
                 IdentityResult Result = await userManager.CreateAsync(user, regesterVM.Password);
                 if (Result.Succeeded)
